@@ -84,7 +84,6 @@ void output(){
 }
 int main(){
 	input();
-	
 	//Bubblesort();  
 	//Selectsort();        
 	//Mergesort(0,n-1);   
