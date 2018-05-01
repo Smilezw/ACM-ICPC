@@ -1,5 +1,5 @@
 // 水果   hdu 1263 
-//排序函数的使用  一个归类的技巧 
+//二级排序 c++ 
  
 #include<iostream>
 #include<string> 

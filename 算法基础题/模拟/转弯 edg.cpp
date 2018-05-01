@@ -1,3 +1,5 @@
+// hdu 1033 Ó¢Óï³¤ÆªÔÄ¶Á 
+
 #include<iostream>  
 using namespace std;
 int main() {
