@@ -19,7 +19,7 @@ void creat(int x, int l, int r){       //½¨Ê÷
     int mid = (l+ r)/ 2;
     creat(x << 1, l, mid);
     creat( (x << 1) + 1, mid + 1, r);
- //   cout << tree[x << 1] <<"  " << tree[(x << 1) + 1] << endl;
+    cout << tree[x << 1] <<"  " << tree[(x << 1) + 1] << endl;
     tree[x] = max(tree[x << 1], tree[(x << 1) + 1]);
 }
 

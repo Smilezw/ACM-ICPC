@@ -1,6 +1,6 @@
 //C - Stacks of Flapjacks
 //uva 120
-// scnaf 的返回值写在while里 如果读入的是字符  上一次的那个回车就会进来 导致程序不会结束
+//翻到最前面  然后往后翻 
 #include <iostream>
 #include <string>
 #include <cstring>
@@ -16,11 +16,6 @@ void overturn(int x){
     for(int i = 0; i <= x/2; i++)  {
         swap(a[i], a[x -i]);
     }
-   /*
-   for(int i = 0; i < n; i++)
-        cout << a[i];
-    cout <<endl;
-    */
 }
 
 int main(){
@@ -48,7 +43,7 @@ int main(){
             }
             if(pos != len-1){
                 if(pos != 0)
-                    overturn(pos);
+                    overturn(pos); //反到前面  往后翻 
                 overturn(len-1);
             }
             len--;
