@@ -1,4 +1,5 @@
 // light oj 1008 - Fibsieve`s Fantabulous Birthday
+// ¾ØÕóÊı×ÖÎ»ÖÃ 
 
 #include <bits/stdc++.h>
 using namespace std; 
