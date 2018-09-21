@@ -13,7 +13,6 @@ void getPrime(){
     }
 }
 
-
 //费马小定理了解一下  a ^ (p-1) = 1 mod p (p为素数
 int judge(ll x)
 {

@@ -13,37 +13,28 @@ ll mod_pow(ll x, ll y, ll mod) {
     }
     return res%mod;
 }
+
 //矩阵快速幂
-//队res进行操作
-const int mod = 10000007;
-const int MAXN = 15;
-ll res[MAXN][MAXN];
-int N;
-
-void Matmul(ll X[MAXN][MAXN], ll Y[MAXN][MAXN], ll mod)
+const int maxn = 50;
+const int mod = 1e9 + 7;
+typedef long long ll;
+typedef vector<ll> vec;
+typedef vector<vec> mat;
+mat mul(mat& A, mat& B)
 {
-    ll t[MAXN][MAXN] = {0};
-    for(int i = 0; i < N;i++)
-        for(int k = 0; k < N;k++)
-            if(X[i][k])
-                for(int j = 0;j < N;j++)
-                    t[i][j] = (( t[i][j] + X[i][k] * Y[k][j] % mod) + mod) % mod;
-    for(int i = 0; i < N; i++)
-        for(int j = 0;j < N; j++)
-            X[i][j] = t[i][j];
+    mat C(A.size(), vec(B[0].size()));
+    for (int i = 0; i < A.size(); i++)
+        for (int k = 0; k < B.size(); k++)
+            if (A[i][k]) // 对稀疏矩阵的优化
+                for (int j = 0; j < B[0].size(); j++)
+                    C[i][j] = (C[i][j] + A[i][k] * B[k][j]) % mod;
+    return C;
 }
-
-void Matrix(ll X[MAXN][MAXN], ll n)
+mat Pow(mat A, ll n)
 {
-    for(int i = 0;i < N;i++){
-        for(int j = 0;j < N;j++){
-            res[i][j] = (i==j);
-        }
-    }
-    //对角线为1
-    while(n){
-        if(n&1) Matmul(res,X);
-        Matmul(X,X);
-        n>>=1;
-    }
+    mat B(A.size(), vec(A.size()));
+    for (int i = 0; i < A.size(); i++) B[i][i] = 1;
+    for (; n; n >>= 1, A = mul(A, A))
+        if (n & 1) B = mul(B, A);
+    return B;
 }

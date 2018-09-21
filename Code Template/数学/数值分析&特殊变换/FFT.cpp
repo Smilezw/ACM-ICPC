@@ -11,6 +11,7 @@ fft大致就是先转换成复数系数，相乘之后再傅里叶逆变换，�
 #include <math.h>
 using namespace std;
 
+00.
 const double PI = acos(-1.0);
 //复数结构体
 struct complex{
