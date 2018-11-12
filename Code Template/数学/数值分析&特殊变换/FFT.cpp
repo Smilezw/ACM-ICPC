@@ -11,7 +11,6 @@ fft大致就是先转换成复数系数，相乘之后再傅里叶逆变换，�
 #include <math.h>
 using namespace std;
 
-00.
 const double PI = acos(-1.0);
 //复数结构体
 struct complex{
@@ -37,7 +36,7 @@ struct complex{
 void change(complex y[],int len){
     int i,j,k;
     for(i = 1, j = len/2;i < len-1; i++){
-        if(i < j)swap(y[i],y[j]);
+        if(i < j) swap(y[i],y[j]);
         //交换互为小标反转的元素，i<j保证交换一次
         //i做正常的+1，j左反转类型的+1,始终保持i和j是反转的
         k = len/2;
