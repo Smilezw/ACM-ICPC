@@ -28,9 +28,9 @@ ll mod_reverse(ll a, ll n) {
 如果x无法被p整除、则x^(p - 1)= 1(mod p)
 a^(-1) = a^(p - 2)(mod p) 可以通过快速幂求出逆元*/
 const int mod = 1000000009;  // ax %mod = 1%mod;
-long long quickpow(long long a, long long b) {
+ll quickpow(ll a, ll b) {
     if (b < 0) return 0;
-    long long ret = 1;
+    ll ret = 1;
     a %= mod;
     while(b) {
         if (b & 1) ret = (ret * a) % mod;
@@ -39,7 +39,7 @@ long long quickpow(long long a, long long b) {
     }
     return ret;
 }
-long long inv(long long a) {
+ll inv(ll a) {
     return quickpow(a, mod - 2);
 }
 //欧拉函数求逆元 a的 n的欧拉函数次减一
