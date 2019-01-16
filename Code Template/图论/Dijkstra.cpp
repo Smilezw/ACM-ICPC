@@ -31,23 +31,23 @@ vector <Edge > edge[MAXN];
 
 priority_queue <Node > q;
 
-void Dijstra(int ss) {
+void Dijstra(int s) {
     while(!q.empty()) q.pop();
     memset(vis, 0, sizeof(vis));
     for(int i = 1; i <= n; i++) dis[i] = INF;
-    dis[ss] = 0;
-    q.push(Node{0,ss});
+    dis[s] = 0;
+    q.push(Node{0,s});
     while(!q.empty() ) {
         Node t = q.top();
         q.pop();
-        int s = t.pos;
-        if(vis[s]) continue;
-        vis[s] = 1;
-        int len = edge[s].size();
+        int u = t.pos;
+        if(vis[u]) continue;
+        vis[u] = 1;
+        int len = edge[u].size();
         for(int i = 0; i < len; i++) {
-            Edge &e = edge[s][i];
-            if(dis[e.v] > dis[s] + e.w) {
-                dis[e.v] = dis[s] + e.w;
+            Edge &e = edge[u][i];
+            if(dis[e.v] > dis[u] + e.w) {
+                dis[e.v] = dis[u] + e.w;
                 q.push(Node {dis[e.v], e.v});
             }
         }
