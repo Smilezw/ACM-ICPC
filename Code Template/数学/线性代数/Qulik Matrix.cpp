@@ -1,18 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
-const ll mod = 1000000009;
-ll ans, n;
-//二分快速幂
-ll mod_pow(ll x, ll y, ll mod) {
-    ll res = 1;
-    while (y > 0) {
-        if (y & 1) res = res * x % mod; //如果二进制最低位为1、则乘上x^(2^i)
-        x = x * x % mod;  // 将x平方
-        y >>= 1;
-    }
-    return res%mod;
-}
 
 //矩阵快速幂
 const int maxn = 50;

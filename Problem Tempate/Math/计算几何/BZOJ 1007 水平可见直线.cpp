@@ -17,7 +17,6 @@ bool cmp(const Line &a, const Line &b){
     return a.k < b.k;
 }
 
-
 int top = 0;
 Line s[MAXN];
 
