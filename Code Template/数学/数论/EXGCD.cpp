@@ -15,14 +15,15 @@ void extend_gcd(ll a, ll b, ll &x, ll &y, ll &d) {
         y -= a / b * x;
     }
 }
+
 //ax = 1(mod n) 要求a与n互质  求逆元   逆元公式 (a/b)mod m = (a mod (m * b))/b
 ll mod_reverse(ll a, ll n) {
-    LL x, y, d;
+    ll x, y, d;
     extend_gcd(a, n, x, y, d);
     if (d == 1) return (x % n + n) % n;
     else return -1;
 }
-
+//欧拉函数求逆元 a的 n的欧拉函数次减一
 /*费马小定理 要求a与n互质  且n为素数
 如果p是素数 x^p = x(mod p)
 如果x无法被p整除、则x^(p - 1)= 1(mod p)
@@ -39,11 +40,10 @@ ll quickpow(ll a, ll b) {
     }
     return ret;
 }
+
 ll inv(ll a) {
     return quickpow(a, mod - 2);
 }
-//欧拉函数求逆元 a的 n的欧拉函数次减一
-
 //求解模线性方程ax=b(mod n)
 ll modular_liner_equation(ll a, ll b, ll n) {
     ll x, y, x0, d;
@@ -56,33 +56,4 @@ ll modular_liner_equation(ll a, ll b, ll n) {
     ll ans = x0, s = n / d;
     ans = (ans % s + s) % s;   //ans为最小整数解
     return ans;
-}
-
-int main() {
-    ll a, b, c, x, y, d, n;
-    scanf("%lld%lld%lld", &a, &b, &n);
-    printf("%lld\n", gcd(a, b));
-    extend_gcd(a, b, x, y, d);
-    printf("%lld %lld %lld\n", x, y, d);
-    printf("%lld\n", mod_reverse(a, n));
-    // 输出ax + by = c 多组解
-    scanf("%lld%lld%lld", &a, &b, &c);
-    extend_gcd(a, b, x, y, d);
-    printf("%lld %lld %lld\n", x, y, d);
-    int k = c / d;
-    x *= k; y *= k; // 这是真正的x, y的值
-    int a0 = a / d, b0 = b / d;
-    int x1, x2, y1, y2;
-    x1 = y1 = -100;//边界
-    x2 = y2 = 100;
-    for (int i = -10; i <= 10; i++) { //一个可能的倍数范围
-        if (x + i * b0 < x1 || x + i * b0 > x2 || y - i * a0 < y1 || y - i * a0 > y2)
-            continue;
-        if (a * (x + i * b0) + b * (y - i * a0) == c) {
-            printf("%lld %lld\n", x + i * b0, y - i * a0);
-        }
-    }
-    //求解模线性方程
-    printf("%lld\n", modular_liner_equation(2, 2, 6));
-    return 0;
 }

@@ -5,7 +5,6 @@ typedef long long ll;
 //矩阵快速幂
 const int maxn = 50;
 const int mod = 1e9 + 7;
-typedef long long ll;
 typedef vector<ll> vec;
 typedef vector<vec> mat;
 mat mul(mat& A, mat& B)

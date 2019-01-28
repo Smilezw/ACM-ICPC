@@ -1,7 +1,7 @@
 //对于二维的容斥关系  直接求不好求，考虑减去行上的不幸运数 (3^n-3)^n  (类比三进制下长度为n的数)
 //显然多减去了行上相同的部分  那么考虑加上去，使用容斥关系
-//对于i行相同      1. 这i行为一种颜色3种选择,再对列    3*c(n,i)*(3^(n-i) - 1)^n
-//对于i行各不相同  2. 这i行各不相同3^i-1种选择，再对列 (3^i-3)*c(n,i)*(3^(n-i))^n
+//对于i行相同      1. 这i行 为一种颜色3种选择,再对列    3*c(n,i)  *  (3^(n-i) - 1)^n （每一列到所有列）
+//对于i行各不相同  2. 这i行各不相同3^i-1种选择，再对列 (3^i-3)*c(n,i) * (3^(n-i))^n
 //总数3^(n^2)
 
 #include <bits/stdc++.h>
@@ -42,10 +42,10 @@ ll n;
 int main(){
     init();
     cin >> n;
-    ll ans = quickpow(3ll, n*n) - quickpow( quickpow(3ll, n) - 3, n);
-    for(ll i = 1; i <= n; i++){
-        ll now = 3*quickpow( (quickpow(3, (n-i)) - 1), n) %mod;
-        now += (quickpow(3,i) - 3)*quickpow(3, (n-i)*n);
+    ll ans = quickpow(3ll, n*n) - quickpow( quickpow(3ll, n) - 3, n); //每一列至少一种颜色的方法
+    for(ll i = 1; i <= n; i++){    //枚举1个颜色行的数量
+        ll now = 3*quickpow( (quickpow(3, (n-i)) - 1), n) %mod;  //整行颜色相同的行的颜色都一样
+        now += (quickpow(3,i) - 3)*quickpow(3, (n-i)*n); //整行颜色相同的行颜色不一样
         now %= mod;
         now *= cal(n, i);
         now %= mod;

@@ -1,6 +1,8 @@
 //分块+fft
 //令V为最大值  L为块长  分为B块 N个数
 // 复杂度 O(BVlogV + L*L)
+
+//区间中的数 区间外的数 产生的影响
 #include <bits/stdc++.h>
 using namespace std;
 
