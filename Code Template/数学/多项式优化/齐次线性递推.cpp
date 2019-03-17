@@ -8,8 +8,7 @@ const int N=4002,mod=1e9+7;
 int ans,n,K,a[N],b[N],c[N],e[N],re[N];
 
 char ch;
-inline void rd(int &x)
-{
+inline void rd(int &x) {
     ch=gc;x=0;int f=0;
     for(;!si;ch=gc) if(ch=='-') f=1;
     for(;si;ch=gc) x=x*10+(ch^48);
@@ -20,8 +19,7 @@ inline int ad(int x,int y){x+=y;return x>=mod? x-mod:x;}
 inline int dc(int x,int y){x-=y;return x<0? x+mod:x;}
 inline int mul(int x,int y){return 1ll*x*y%mod;}
 
-inline void Mul(int *f,int *g,int n)
-{
+inline void Mul(int *f,int *g,int n) {
     RI int i,j;
     memset(re,0,sizeof(int)*(n+1));
     for(i=0;i<=K;++i)
@@ -36,7 +34,7 @@ inline void Mul(int *f,int *g,int n)
     for(i=0;i<=K;++i) g[i]=re[i];
 }
 
-int main(){
+int main() {
     RI int i,j,M;
     rd(n);rd(K);M=K<<1;
     for(i=1;i<=K;++i) rd(a[i]); //系数

@@ -46,14 +46,14 @@ void creat(int x, int l, int r){
 
 /*
 //单点
-int updata(int x, int pos, int now){
+void updata(int x, int pos, int now){
     if(tree[x].l == tree[x].r) return tree[x].val = tree[x].val + now;
 
-    int mid = Mid;
+    int mid = ( tree[x].l + tree[x].r ) >> 1;
 
     if(pos <= mid) updata(lson, pos, now);
     if(pos >= mid + 1) updata(rson, pos, now);
-    return push_up(x);
+    push_up(x);
 }
 */
 

@@ -1,4 +1,8 @@
-//现有NN个数a1,a2,⋯,aN。对于每一个ak，求有多少个有序二元组(i,j)满足(ai×aj) mod P=ak，其中P为一给定质数。
+//现有NN个数a1,a2,⋯,aN。
+//对于每一个ak，求有多少个有序二元组(i,j)满足(ai×aj) mod P=ak
+//其中P为一给定质数。
+
+//点分治时用FFT优化
 
 #include<bits/stdc++.h>
 using namespace std;

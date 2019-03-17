@@ -1,27 +1,37 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
 
-//矩阵快速幂
-const int maxn = 50;
-const int mod = 1e9 + 7;
-typedef vector<ll> vec;
-typedef vector<vec> mat;
-mat mul(mat& A, mat& B)
-{
-    mat C(A.size(), vec(B[0].size()));
-    for (int i = 0; i < A.size(); i++)
-        for (int k = 0; k < B.size(); k++)
-            if (A[i][k]) // 对稀疏矩阵的优化
-                for (int j = 0; j < B[0].size(); j++)
-                    C[i][j] = (C[i][j] + A[i][k] * B[k][j]) % mod;
-    return C;
+const int MM = 55;
+
+struct Matrix {
+    int mat[MM][MM];
+};
+
+Matrix multiply(Matrix a,Matrix b,int M) {
+    Matrix c;
+    memset(c.mat,0,sizeof(c.mat));
+    for(int i=0;i<M;i++) {
+        for(int j=0;j<M;j++) {
+            if(a.mat[i][j]==0)continue;
+            for(int k=0;k<M;k++) {
+                if(b.mat[j][k]==0)continue;
+                c.mat[i][k]=(c.mat[i][k]+a.mat[i][j]*b.mat[j][k])%M;
+            }
+        }
+    }
+    return c;
 }
-mat Pow(mat A, ll n)
-{
-    mat B(A.size(), vec(A.size()));
-    for (int i = 0; i < A.size(); i++) B[i][i] = 1;
-    for (; n; n >>= 1, A = mul(A, A))
-        if (n & 1) B = mul(B, A);
-    return B;
+
+Matrix quickmod(Matrix a,int n,int M) {
+    Matrix res;
+    for(int i=0;i<M;i++){
+        for(int j=0;j<M;j++)
+            res.mat[i][j]=(i==j);
+    }
+    while(n) {
+        if(n&1) res=multiply(res,a,M);
+        n>>=1;
+        a=multiply(a,a,M);
+    }
+    return res;
 }
