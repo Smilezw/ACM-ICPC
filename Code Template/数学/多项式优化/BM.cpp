@@ -6,6 +6,7 @@
 #include <string>
 #include <map>
 #include <set>
+#include <iostream>
 #include <cassert>
 using namespace std;
 #define rep(i,a,n) for (int i=a;i<n;i++)
@@ -38,7 +39,8 @@ namespace linear_seq {
         rep(i,0,k) a[i]=_c[i];
     }
     int solve(ll n,VI a,VI b) { // a 系数 b 初值 b[n+1]=a[0]*b[n]+...
-        //        printf("%d\n",SZ(b));
+                //printf("%d\n",SZ(b));
+
         ll ans=0,pnt=0;
         int k=SZ(a);
         assert(SZ(a)==SZ(b));
@@ -47,6 +49,14 @@ namespace linear_seq {
         rep(i,0,k) if (_md[i]!=0) Md.push_back(i);
         rep(i,0,k) res[i]=base[i]=0;
         res[0]=1;
+        for(int i = 0; i < 5; i++) cout << a[i] << " ";
+        cout << endl;
+        for(int i = 0; i < 5; i++) cout << b[i] << " ";
+        cout << endl;
+        for(int i = 0; i < 5; i++) cout << _c[i] << " ";
+        cout << endl;
+        for(int i = 0; i < 5; i++) cout << _md[i] << " ";
+        cout << endl;
         while ((1ll<<pnt)<=n) pnt++;
         for (int p=pnt;p>=0;p--) {
             mul(res,res,k);
@@ -85,13 +95,22 @@ namespace linear_seq {
         VI c=BM(a);
         c.erase(c.begin());
         rep(i,0,SZ(c)) c[i]=(mod-c[i])%mod;
-        return solve(n,c,VI(a.begin(),a.begin()+SZ(c)));
+        ll ret = solve(n,c,VI(a.begin(),a.begin()+SZ(c)));
+
+        cout << endl;
+        return ret;
     }
 };
 
 int main() {
     for (scanf("%d",&_);_;_--) {
         scanf("%lld",&n);
-        printf("%d\n",linear_seq::gao(VI{x1,x2,x3,x4},n-1));
+        VI tt;
+        tt.push_back(3);
+        tt.push_back(20);
+        tt.push_back(119);
+        tt.push_back(696);
+        tt.push_back(4059);
+        printf("%d\n",linear_seq::gao(tt,n-1));
     }
 }

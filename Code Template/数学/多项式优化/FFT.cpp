@@ -44,3 +44,6 @@ void fft(cpx y[],int len,int on){
 
 cpx x1[MAXN];
 cpx x2[MAXN];
+
+int main() {
+}
