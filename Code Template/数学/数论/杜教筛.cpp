@@ -1,6 +1,4 @@
-
 //莫比乌斯函数前n项和
-
 #include<cstdio>
 #include<cstdlib>
 #include<algorithm>
@@ -28,7 +26,6 @@ inline void Pre(){
 }
 unordered_map<ll,int> S;
 
-//前n项和函数（不要问我怎么得的）
 inline int Sum(ll n){
   if (n<=MAXN) return miu[n];
   if (S.find(n)!=S.end()) return S[n];
@@ -43,8 +40,8 @@ inline int Sum(ll n){
 
 int main(){
   ll l,r;
-  freopen("t.in","r",stdin);
-  freopen("t.out","w",stdout);
+  //freopen("t.in","r",stdin);
+  //freopen("t.out","w",stdout);
   Pre();
   scanf("%lld%lld",&l,&r); swap(l,r); swap(l,r);
   printf("%d\n",Sum(r)-Sum(l-1));
