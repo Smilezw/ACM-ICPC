@@ -21,7 +21,7 @@ int g(int x){
     }
     for(int i = 1; i <= x/2; i++){
         int t = 0;
-        t = t^g(i)^g(x-i);
+        t = t^g(i)^g(x-i);   //两个游戏
         s[t] = 1;
     }
     for(int i = 0;; i++)
