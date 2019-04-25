@@ -1,18 +1,10 @@
-//O（m*n*n）
-#include <iostream>
-#include <algorithm>
-#include <cstdio>
-#include <cmath>
-#include <cstring>
-#include <string>
-#include <set>
-#include <map>
-#include <stack>
+//O（m*n*n）  建图小心点
+#include <bits/stdc++.h>
 using namespace std;
 #define pb push_back
 
 const int inf = 0x3f3f3f3f;
-const int N = 1005;
+const int N = 5000;
 const int M = 1e6+5;
 
 struct Edge{
@@ -92,4 +84,56 @@ int dinic(int s, int t, int n) {
         }
     }
     return maxflow;
+}
+
+
+int n, m;
+int sp, tp;
+int pr[N];
+
+typedef long long ll;
+
+inline ll gi(){
+    ll x=0,q=1; char ch=getchar(); while ((ch<'0' || ch>'9') && ch!='-') ch=getchar();
+    if (ch=='-') q=-1,ch=getchar(); while (ch>='0' && ch<='9') x=x*10+ch-48,ch=getchar(); return q*x;
+}
+
+
+int main() {
+    while(scanf("%d%d", &n, &m)!=EOF) {
+        init();
+        sp = 0;
+        memset(pr, 0, sizeof(pr));
+        for(int i = 1; i <= n; i++) {
+            int v = 0;
+            for(int j = 0; j < m; j++) {
+                int x;
+                x = gi();
+                if(x) v |= (1 << j);
+            }
+            pr[v]++;
+        }
+        int nn = (1 << m);
+        int nt = m+1;
+        for(int i = 1; i < nn; i++) {
+            if(pr[i]) {
+                add(sp, nt, pr[i]);
+                for(int j = 0; j < m; j++) {
+                    if(i & (1 << j)) add(nt, j+1, pr[i]);
+                }
+                nt++;
+            }
+        }
+        tp = nt;
+        for(int i = 1; i <= m; i++) {
+            int w;
+            w = gi();
+            add(i, tp, w);
+        }
+        nt++;
+        int ans = dinic(sp, tp, nt);
+        if(ans == n) puts("YES");
+        else cout << "NO"<< endl;
+    }
+    return 0;
 }
