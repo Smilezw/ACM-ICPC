@@ -1,3 +1,5 @@
+//筛半素数
+
 #include<cstdio>
 #include<algorithm>
 #include<cstring>

@@ -4,7 +4,7 @@
 求欧拉函数值  复杂度O(sqrt(n))*/
 ll eular(ll n) {
     ll ans = n;
-    for(int i = 2;i*i <= n;i++){
+    for(ll i = 2;i*i <= n;i++){
         if(n % i == 0){
             ans -= ans/i;
             while(n % i == 0)

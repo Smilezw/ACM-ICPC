@@ -1,3 +1,7 @@
+//由于相邻的两个联通
+//求相邻两个分开的次数即可
+//等价于求 相邻01 的种类
+
 #include<cstdio>
 long long ans,n,i,x,ls;
 int main(){
