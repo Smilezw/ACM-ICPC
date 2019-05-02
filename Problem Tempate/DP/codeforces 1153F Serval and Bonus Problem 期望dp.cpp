@@ -2,7 +2,6 @@
 神仙题就是
 题意  你有一个长度为L 的数列，在上面随机选择2∗n条线段
 求至少被覆盖了K次的区间的长度和的期望
-
 */
 #include <cstdio>
 using namespace std;
