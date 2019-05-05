@@ -1,28 +1,29 @@
-int dfn[MAXN];
-int low[MAXN];
-bool vis[MAXN];
-int stack[MAXN];
+int dfn[N], low[N], csize[N], sta[N], color[N];
+bool vis[N];
+int dfs_num, col_num, top;
 
-void Tarjan ( int x ) {
-         dfn[ x ] = ++dfs_num ;
-         low[ x ] = dfs_num ;
-         vis [ x ] = true ;//是否在栈中
-         stack [ ++top ] = x ;
-         for ( int i=head[ x ] ; i!=0 ; i=e[i].next ){  //链式前向星
-                  int temp = e[ i ].to ;
-                  if ( !dfn[ temp ] ){
-                           Tarjan ( temp ) ;
-                           low[ x ] = gmin ( low[ x ] , low[ temp ] ) ;
-                 }
-                 else if ( vis[ temp ])low[ x ] = gmin ( low[ x ] , dfn[ temp ] ) ;
-         }
-         if ( dfn[ x ]==low[ x ] ) {//构成强连通分量
-                  vis[ x ] = false ;
-                  color[ x ] = ++col_num ;//染色
-                  while ( stack[ top ] != x ) {//清空
-                           color [stack[ top ]] = col_num ;
-                           vis [ stack[ top-- ] ] = false ;
-                 }
-                 top -- ;
-         }
+void Tarjan(int x) {
+	dfn[x] = ++dfs_num ;
+	low[x] = dfs_num ;
+	vis[x] = 1 ;//是否在栈中
+	sta[++top] = x;
+	for(int i = head[x] ; i != -1; i = edge[i].next){
+		int temp = edge[i].to ;
+		if (!dfn[temp]){
+			Tarjan(temp);
+			low[x] = min(low[x], low[temp]);
+		}
+		else if (vis[temp]) low[x] = min(low[x] , dfn[temp]) ;
+	}
+	int now = 0;
+	if (dfn[x]==low[x]) {//构成强连通分量
+		++col_num;//染色
+		while(now != x) {//清空
+			now = sta[top];
+			top--;
+			csize[col_num]++;
+			color[now] = col_num;
+			vis[now] = 0;
+		}
+	}
 }
