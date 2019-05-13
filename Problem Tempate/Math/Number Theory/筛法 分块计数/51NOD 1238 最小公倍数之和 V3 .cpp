@@ -1,7 +1,3 @@
-//积性函数化简技巧
-//i^3 前n项和为 (n(n+1)*2)^2  =  (1+2+...+n)*(1+2+...+n) = sum{i^2sum{d|i euler(d) } }
-//i^2 前n项和为 (n(n+1)(2n+1)/6)
-//化简时注意平方项加入id函数做卷积
 #include <bits/stdc++.h>
 #include <tr1/unordered_map>
 using namespace std;

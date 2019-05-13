@@ -5,7 +5,7 @@
 #include <vector>
 #include <cstring>
 using namespace std;
-typedef long long ll;jia'dian
+typedef long long ll;
 const int N = 20005;
 const int M = N*N;
 const ll inf = 1e18;

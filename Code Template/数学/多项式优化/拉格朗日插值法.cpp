@@ -1,8 +1,8 @@
-//传入sum每一项的值
+//
 namespace polysum {
     #define rep(i,a,n) for (int i=a;i<n;i++)
     #define per(i,a,n) for (int i=n-1;i>=a;i--)
-    const int D=2010;  //k的最高次
+    const int D=2010;  //
     ll a[D],f[D],g[D],p[D],p1[D],p2[D],b[D],h[D][2],C[D];
     ll powmod(ll a,ll b){ll res=1;a%=mod;assert(b>=0);for(;b;b>>=1){if(b&1)res=res*a%mod;a=a*a%mod;}return res;}
     ll calcn(int d,ll *a,ll n) { // a[0].. a[d]  a[n]

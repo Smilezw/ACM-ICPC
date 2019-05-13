@@ -1,4 +1,4 @@
-//spfa 增广
+//spfa
 
 #include <iostream>
 #include <string>
@@ -63,7 +63,6 @@ bool spfa(int s, int t) {
             }
         }
     }
-    //如果是最小费用可行流则要这一句(要求费用最小,不要求流量最大)
     //if (dis[t] > 0) return false;
     if(pre[t] == -1) return 0;
     else return 1;

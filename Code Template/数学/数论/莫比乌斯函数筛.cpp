@@ -1,12 +1,3 @@
-/*
-约数的莫比乌斯反演：
-若：f(n)=∑d|n g(d)
-则：g(n)=∑d|n μ(d)f(n/d)
-倍数的莫比乌斯反演：
-若：f(n)=∑n|d g(d)
-则：g(n)=∑n|d μ(d/n)f(d)
-*/
-
 const int MANX = 1e6;
 bool check[MAXN];
 ll prime[MAXN];
