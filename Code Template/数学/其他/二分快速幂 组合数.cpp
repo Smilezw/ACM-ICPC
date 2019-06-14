@@ -1,11 +1,7 @@
-#include <bits/stdc++.h>
-using namespace std;
-
-typedef long long ll;
-const int MAXN = 1e5 + 5;
-const int mod = 1e9 + 7;
-
-ll mod_pow(ll x, ll y) {
-    ll res = 1;
-    while (y > 0) {
-        if (y & 1) res = res * x % mod; //å¦‚æœäºŒè¿›åˆ¶æœ€ä½ä½ä¸
+ll pow_mod(ll a, ll b){//aµÄb´Î·½
+    if(b == 0) return 1%MOD;
+    ll ret = pow_mod(a, b/2);
+    ret = ret * ret % MOD;
+    if(b % 2 == 1) ret = ret * a % MOD;
+    return ret;
+}

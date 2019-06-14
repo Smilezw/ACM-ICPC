@@ -10,7 +10,7 @@ int vis[MAXN];
 vector <int > G[MAXN];
 int n, allnode, root;
 
-void getroot(int u, int fa) {  //æ ¹éƒ¨èŠ‚ç‚¹
+void getroot(int u, int fa) {  //¸ù²¿½Úµã
     siz[u] = 1; f[u] = 0;
     int len = G[u].size();
     for(int i = 0; i < len; i++) {
@@ -20,14 +20,14 @@ void getroot(int u, int fa) {  //æ ¹éƒ¨èŠ‚ç‚¹
         siz[u] += siz[to];
         f[u] = max(f[u], siz[to]);
     }
-    f[u] = max(f[u], allnode - siz[u]); //é™¤å½“å‰ç‚¹ä»¥å¤–çš„æ‰€æœ‰å­æ ‘
+    f[u] = max(f[u], allnode - siz[u]); //³ýµ±Ç°µãÒÔÍâµÄËùÓÐ×ÓÊ÷
     if(f[u] < f[root]) root = u;
 }
 
 int dep[MAXN], mxdep;
 int cnt[MAXN], nowcnt[MAXN];
 
-void getdeep(int u, int f) {   //æ·±åº¦
+void getdeep(int u, int f) {   //Éî¶È
     siz[u] = 1;
     int len = G[u].size();
     for(int i = 0; i < len; i++) {
@@ -41,7 +41,7 @@ void getdeep(int u, int f) {   //æ·±åº¦
 }
 
 
-ll cal(int u, int val) {  //è®¡ç®—è´¡çŒ®
+ll cal(int u, int val) {  //¼ÆËã¹±Ï×
     ll ret = 0;
 
     return ret;
@@ -49,12 +49,12 @@ ll cal(int u, int val) {  //è®¡ç®—è´¡çŒ®
 
 void point_Divede(int x) {
     vis[x] = 1;
-    cal(x, 1);  //çˆ¶èŠ‚ç‚¹çš„æ‰€æœ‰è·ç¦»
+    cal(x, 1);  //¸¸½ÚµãµÄËùÓÐ¾àÀë
     int se = G[x].size();
     for(int i = 0; i < se; i++) {
         int to = G[x][i];
         if(vis[to]) continue;
-        cal(to, -1);   //å‡åŽ»å­æ ‘æ‰€æœ‰è´¡çŒ®
+        cal(to, -1);   //¼õÈ¥×ÓÊ÷ËùÓÐ¹±Ï×
         getroot(to, x);
         point_Divede(root);
     }

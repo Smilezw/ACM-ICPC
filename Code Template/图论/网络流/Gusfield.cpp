@@ -2,16 +2,7 @@
 //原图最小割   --   分为两个子图  --  最小割  ---  继续分治
 //   GHtree
 
-#include<cstdio>
-#include<cstring>
-#include<cstdlib>
-#include<set>
-#include<ctime>
-#include<vector>
-#include<queue>
-#include<algorithm>
-#include<map>
-#include<cmath>
+#include<bits/stdc++.h>
 #define eps 1e-8
 #define inf 1000000000
 #define pa pair<int,int>

@@ -17,6 +17,7 @@ struct Circle
 		x=a,y=b,r=c;
 	}
 } C[MAXN];
+
 struct Line
 {
 	double xa, ya, xb, yb, k, b;

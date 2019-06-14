@@ -2,9 +2,12 @@
 namespace polysum {
     #define rep(i,a,n) for (int i=a;i<n;i++)
     #define per(i,a,n) for (int i=n-1;i>=a;i--)
-    const int D=2010;  //
+
+    const int D=2010;  //最大幂次
+    //a*yi  f阶乘  g阶乘逆元
     ll a[D],f[D],g[D],p[D],p1[D],p2[D],b[D],h[D][2],C[D];
     ll powmod(ll a,ll b){ll res=1;a%=mod;assert(b>=0);for(;b;b>>=1){if(b&1)res=res*a%mod;a=a*a%mod;}return res;}
+
     ll calcn(int d,ll *a,ll n) { // a[0].. a[d]  a[n]
         if (n<=d) return a[n];
         p1[0]=p2[0]=1;
@@ -37,7 +40,7 @@ namespace polysum {
         rep(i,1,m+2) b[i]=(b[i-1]+b[i])%mod;
         return calcn(m+1,b,n-1);
     }
-    ll qpolysum(ll R,ll n,ll *a,ll m) { // a[0].. a[m] \sum_{i=0}^{n-1} a[i]*R^i //閲嶅績鎷夋牸鏈楁棩
+    ll qpolysum(ll R,ll n,ll *a,ll m) { // a[0].. a[m] \sum_{i=0}^{n-1} a[i]*R^i
         if (R==1) return polysum(n,a,m);
         a[m+1]=calcn(m,a,m+1);
         ll r=powmod(R,mod-2),p3=0,p4=0,c,ans;
@@ -59,3 +62,21 @@ namespace polysum {
         return ans;
     }
 } // polysum::init();
+
+int main(){
+    ll n,k;
+    polysum::init(1000005);
+	cin>>n>>k;
+	if(k==0) {
+	    cout<<n<<endl;
+        return 0;
+    }
+	a[0]=0;
+	for(int i=1;i<=k+2;i++)  //算出前k+2项，调用拉格朗日插值。
+	{
+		a[i]=(quick_mod(i,k))%mod;
+	}
+	ll ans=polysum::polysum(k+2,a,n+1)%mod;//求第n项要传n+1
+	cout<<ans%mod<<endl;
+    return 0;
+}
