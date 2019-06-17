@@ -9,6 +9,10 @@ using namespace std::tr1;
 typedef long long ll;
 typedef pair <ll, ll> pr;
 
+//X = sqrt(X)
+//(a + bx)(c + dx) = (ac + bdX) + (bc + ad)x
+//(a - bx)(c - dx) = (ac + bdX) - (bc + ad)x
+
 pr mul(pr a, pr b, ll mod, ll B){
     return mp( (a.fi*b.fi%mod + a.se*b.se%mod*B)%mod , (a.fi*b.se%mod + a.se*b.fi%mod)%mod );
 }
