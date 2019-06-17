@@ -1,156 +1,83 @@
-#include <iostream>
-#include "memory.h"
-#include<string>
+#include<iostream>
+#include<stdio.h>
+#include<string.h>
+#include<map>
 #include<vector>
-#include <stdlib.h>
+#include<set>
+#include<stack>
+#include<queue>
+#include<algorithm>
+#include<stdlib.h>
 using namespace std;
+#define MAX(a,b) (a > b ? a : b)
+#define MIN(a,b) (a < b ? a : b)
+#define mem(a) memset(a,0,sizeof(a))
+#define MAXN 105
+#define INF 1000000007
 
-#define LIST_INIT_SIZE 100  //线性表存储空间的初始分配量
-#define LISTINCREMNET  10   //线性表存储空间的分配增量
+int Price[MAXN],Edge[MAXN][MAXN],Level[MAXN];
+int vis[MAXN], d[MAXN];
+int N,M,ans;
 
-//链表结点类
-template<typename Elemtype>
-struct LNode{
-    Elemtype data;  //数据元素
-    LNode* next = NULL; //结点指针
-    LNode(){}
-    LNode(Elemtype d)
-    {   data = d; }
-    void release()
-    {//用递归的方法简单表达释放next所指的后续
-    if(next) {
-      next->release();//用递归调用
-      delete next;
-    }
-    }
-};
-//链表结点类
-struct LinkList{
-    typedef LNode<Elemtype> LNode;
-    LNode header;
-    int length = 0;//记录链表结点个数
-    ~LinkList()
+void init()
+{
+    mem(Price); mem(Level);
+    for(int i=0;i<=N;i++)
     {
-          header.release();
-    }
-    void insert(Elemtype e)
-    {//插入元素e到链表头部
-        LNode *p = new LNode();
-        p->data = e;
-        p->next = header.next;
-        header.next = p;
-        length++;
-    }
-
-    LNode *find(Elemtype e)
-    {
-        LNode *p = header.next;//从第一个结点开始
-        while (p)
+        for(int j=0;j<=N;j++)
         {
-          if (p->data == e) break;//对比当前结点
-          p = p->next;//移动指针到下一个结点
-        }
-        return p;//返回查找结果
-    }
-
-};
-
-#define LIST_INIT_SIZE 100  //线性表存储空间的初始分配量
-#define LISTINCREMNET  10   //线性表存储空间的分配增量
-template <typename ElemType>
-struct SeqList{
-    ElemType *items;    //存储空间基址
-    int length;         //当前长度
-    int capacity;           //当前分配的存储容量（以sizeof(ElemType)为单位)
-
-    SeqList(int c = LIST_INIT_SIZE)//按指定容量创建顺序表
-    {
-        items = NULL;
-        length = 0;
-        resize(c);//分配初始存储空间
-    }
-
-    SeqList(const SeqList& mother)//深拷贝，否则对象复制以后，两个对象指向同一个动态申请的空间，修改和释放都会导致异常
-    {
-        items = NULL;
-        length = mother.length;
-        resize(mother.capacity);
-        memcpy(items, mother.items, length*sizeof(ElemType));
-    }
-
-    ~SeqList()
-    {
-        if (items)
-        {
-            delete[]items;//释放存储空间
-            items = NULL;
+            Edge[i][j] = INF;//初始化每条边都是不连通的
         }
     }
+}
 
-    void resize(int c)//调整存储空间大小
+void read()
+{
+    int i,j,X,T,TP;
+    for(i=1;i<=N;i++)
     {
-        ElemType *newdata = new ElemType[c];
-        if (items != NULL)
+        scanf("%d%d%d",&Price[i], &Level[i], &X);
+        for(j=0;j<X;j++)
         {
-            memcpy(newdata, items, length*sizeof(ElemType));
-            delete []items;
+            scanf("%d %d", &T, &TP);
+            Edge[T][i] = TP;//记录边
         }
-        items = newdata;
-        capacity = c;
+        Edge[0][i] = Price[i];
     }
+}
 
-    void output()//输出线性表
+int dijkstra()
+{
+    for(int i=1;i<=N;i++)d[i] = Price[i];//源点0到每个点的权值赋为这个点的价格
+    for(int i=1;i<=N;i++)
     {
-        cout<<"List: ";
-        for (int i = 0; i < length; i++)
-            cout << items[i] << " ";
-        cout << endl;
+        int temp = INF,x;
+        for(int j=1;j<=N;j++)if(!vis[j] && d[j]<=temp)temp = d[x = j];
+        vis[x] = 1;
+        for(int j=1;j<=N;j++)if(d[x]+Edge[x][j] < d[j] && !vis[j])d[j] = d[x]+Edge[x][j];//要从合法的物品中选取，加上!vis[j]
     }
-
-    void append(ElemType e)//追加元素
-    {
-        if (length == capacity)//元素满了，需要先扩容
-            resize(capacity + LISTINCREMNET);
-        items[length++] = e;
-    }
-
-
-    ElemType &operator[](int index)//获取index位置的元素的引用
-    {
-        return items[index];
-    }
-
-    void deleteAt(int index)//删除index位置的元素
-    {
-        if (index < 0 || index >= length) throw "illegal command";
-        for (int i = index; i < length - 1; i++)
-            items[i] = items[i + 1];
-        length--;
-    }
-
-    void clear()//清空数据元素
-    {
-        length = 0;
-        resize(LIST_INIT_SIZE);//释放和重新分配空间
-    }
-};
-
-const int mod = 1e5 + 7;
-LinkList <int > _hash[mod];
-
-void text{
-	srand(time(NULL));
-	SeqList <int> t;
-	int n = 10;
-	for(int i = 0;i < n; i++) {
-		int v = rand()%10;
-		t.append(v);
-	}
-
+    return d[1];//这里找到的最小值是未知起点的最小值
 }
 
 int main()
 {
-	text();
-	return 0;
+    while(~scanf("%d %d", &M, &N))
+    {
+        init();
+        read();
+        ans = INF;
+        for(int i=1;i<=N;i++)
+        {
+            int minLevel = Level[i];//将目前的点视作等级最低的点
+            for(int j=1;j<=N;j++)
+            {
+                if(Level[j] - minLevel > M || minLevel > Level[j])vis[j] = 1;//如果有比它还低的点，或者差超过M，视为不合法
+                else vis[j] = 0;
+            }
+            int now = dijkstra();
+            ans = MIN(ans,  now);
+        }
+        printf("%d\n", ans);
+    }
+    return 0;
 }
