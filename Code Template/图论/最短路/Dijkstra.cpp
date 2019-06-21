@@ -1,5 +1,3 @@
-//带堆优  n*logm
-
 #include <cstdio>
 #include <iostream>
 #include <string>
@@ -8,8 +6,11 @@
 #include <cstring>
 using namespace std;
 
-const int MAXN = 1e6 + 5;
+const int N = 1e6 + 5;
+const int M = 1e6 + 5;
 const int INF = 0x3f3f3f3f;
+
+int n, m;
 
 struct Node {
     int d, pos;
@@ -19,15 +20,25 @@ struct Node {
 };
 
 struct Edge {
-    int u, v, w;
-};
+    int to, w;
+    int next;
+}edge[M];
 
-int n, m;
+int head[N], tot;
 
-int dis[MAXN];
-int vis[MAXN];
+void init(int n) {
+    for(int i = 0; i <= n; i++) head[i] = -1;
+    tot = 0;
+}
 
-vector <Edge > edge[MAXN];
+void add(int u, int v, int w) {
+    edge[tot].to = v; edge[tot].w = w;
+    edge[tot].next = head[u];
+    head[u] = tot++;
+}
+
+int dis[N];
+int vis[N];
 
 priority_queue <Node > q;
 
@@ -44,11 +55,11 @@ void Dijstra(int s) {
         if(vis[u]) continue;
         vis[u] = 1;
         int len = edge[u].size();
-        for(int i = 0; i < len; i++) {
-            Edge &e = edge[u][i];
-            if(dis[e.v] > dis[u] + e.w) {
-                dis[e.v] = dis[u] + e.w;
-                q.push(Node {dis[e.v], e.v});
+        for(int i = head[u]; i != -1; i = edge[i].next) {
+            Edge v = edge[i].to;
+            if(dis[v] > dis[u] + edge[i].w) {
+                dis[v] = dis[u] + edge[i].w;
+                q.push(Node {dis[v], v});
             }
         }
     }
