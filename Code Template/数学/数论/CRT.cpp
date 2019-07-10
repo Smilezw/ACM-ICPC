@@ -11,7 +11,7 @@ void extend_gcd(ll a, ll b, ll &x, ll &y, ll &d) {
         y -= a / b * x;
     }
 }
-//中国剩余定理 a[]存放余数 w[]存放两两互质的数
+
 //sum{ai*ti*mi} ti*Mi % mi = 1
 ll CRT(ll a[], ll w[], ll len) {
     ll d, x, y, m;
@@ -21,13 +21,12 @@ ll CRT(ll a[], ll w[], ll len) {
         n *= w[i];
     for (int i = 0; i < len; i++) {
         m = n / w[i];   //Mi
-        extend_gcd(w[i], m, x, y, d);   // w[i] 与 m 互素
+        extend_gcd(w[i], m, x, y, d);
         ret = (ret + y * m * a[i]) % n;   //y*m = ti*Mi
     }
     return (n + ret % n) % n;
 }
 
-//对于不互质情况  解n个方程的方程组  以 a，r形式给出
 ll _CRT(int n, ll a[], ll r[]) {
     ll x, y, d;
     ll a1 = a[0], r1 = r[0];
@@ -35,13 +34,13 @@ ll _CRT(int n, ll a[], ll r[]) {
         extend_gcd(a1, a[i], x, y, d);
         if((r[i] - r1) % d)
             return -1;
-        x = (r[i]-r1)/d*x;   //特解
+        x = (r[i]-r1)/d*x;
         y = a[i]/d;
-        x = (x%y + y) % y;  //通解
-        r1 = x*a1 + r1 ;    //回代
+        x = (x%y + y) % y;
+        r1 = x*a1 + r1 ;
         a1 = (a1*a[i])/d ;    //lcm
     }
-    extend_gcd(1, a1, x, y, d);   //合并方程
+    extend_gcd(1, a1, x, y, d);
     if(r1 % d) return -1;
     else {
         x = r1/d*x ;

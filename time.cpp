@@ -1,83 +1,107 @@
-#include<iostream>
-#include<stdio.h>
-#include<string.h>
-#include<map>
-#include<vector>
-#include<set>
-#include<stack>
-#include<queue>
-#include<algorithm>
-#include<stdlib.h>
+@@ -0,0 +1,106 @@
+#pragma GCC optimize(3,"Ofast","inline")
+#include <bits/stdc++.h>
 using namespace std;
-#define MAX(a,b) (a > b ? a : b)
-#define MIN(a,b) (a < b ? a : b)
-#define mem(a) memset(a,0,sizeof(a))
-#define MAXN 105
-#define INF 1000000007
 
-int Price[MAXN],Edge[MAXN][MAXN],Level[MAXN];
-int vis[MAXN], d[MAXN];
-int N,M,ans;
+const int N = 1000005;
+const int MAXN = 1e6 + 5;
+const int INF = 0x3f3f3f3f;
 
-void init()
-{
-    mem(Price); mem(Level);
-    for(int i=0;i<=N;i++)
-    {
-        for(int j=0;j<=N;j++)
-        {
-            Edge[i][j] = INF;//初始化每条边都是不连通的
+//nlongm
+struct DIJSTRA{
+
+    int tot;  //
+    struct Node {
+        int d, pos;
+    }sta[N];
+
+    void push(Node b) {
+    	sta[++tot] = b;
+    	for(int i = tot,j = i >> 1; j; i = j,j = i >> 1) {
+    		if(sta[j].d > sta[i].d) swap(sta[j], sta[i]);    //
+    	}
+    }
+
+    void pop() {
+    	sta[1] = sta[tot--];//
+    	for(int i = 1, j = i << 1; j <= tot; i = j,j = i << 1) {   //
+    		if(j+1 <= tot && sta[j+1].d < sta[j].d) j++;
+    		if(sta[i].d < sta[j].d) break;
+    		else swap(sta[i],sta[j]);
+
+    	}
+    }
+
+    int n, m;
+
+    struct Edge {  //
+        int u, v, w;
+        int next;
+    }edge[N];
+
+    int head[N], cal;   //
+
+    void init() {
+        for(int i = 0; i <= n; i++) head[i] = -1;
+        cal = 0;
+    }
+
+    void add(int u, int v, int w) {
+        edge[cal].u = u, edge[cal].v = v, edge[cal].w = w;
+        edge[cal].next = head[u], head[u] = cal++;
+    }
+
+    //
+    int dis[MAXN];
+    int vis[MAXN];
+
+    void Dijstra(int s) {
+        tot = 0;   //
+        for(int i = 0; i <= n; i++) {
+            dis[i] = INF;
+            vis[i] = 0;
         }
-    }
-}
-
-void read()
-{
-    int i,j,X,T,TP;
-    for(i=1;i<=N;i++)
-    {
-        scanf("%d%d%d",&Price[i], &Level[i], &X);
-        for(j=0;j<X;j++)
-        {
-            scanf("%d %d", &T, &TP);
-            Edge[T][i] = TP;//记录边
-        }
-        Edge[0][i] = Price[i];
-    }
-}
-
-int dijkstra()
-{
-    for(int i=1;i<=N;i++)d[i] = Price[i];//源点0到每个点的权值赋为这个点的价格
-    for(int i=1;i<=N;i++)
-    {
-        int temp = INF,x;
-        for(int j=1;j<=N;j++)if(!vis[j] && d[j]<=temp)temp = d[x = j];
-        vis[x] = 1;
-        for(int j=1;j<=N;j++)if(d[x]+Edge[x][j] < d[j] && !vis[j])d[j] = d[x]+Edge[x][j];//要从合法的物品中选取，加上!vis[j]
-    }
-    return d[1];//这里找到的最小值是未知起点的最小值
-}
-
-int main()
-{
-    while(~scanf("%d %d", &M, &N))
-    {
-        init();
-        read();
-        ans = INF;
-        for(int i=1;i<=N;i++)
-        {
-            int minLevel = Level[i];//将目前的点视作等级最低的点
-            for(int j=1;j<=N;j++)
-            {
-                if(Level[j] - minLevel > M || minLevel > Level[j])vis[j] = 1;//如果有比它还低的点，或者差超过M，视为不合法
-                else vis[j] = 0;
+        dis[s] = 0;
+        push((Node){0,s});
+        while(tot) {
+            Node t = sta[1];
+            pop();
+            int u = t.pos;
+            if(vis[u]) continue;
+            vis[u] = 1;
+            for(int i = head[u]; i != -1; i = edge[i].next) {  //
+                int v = edge[i].v;
+                int w = edge[i].w;
+                if(dis[v] > dis[u] + w) {   //
+                    dis[v] = dis[u] + w;
+                    push((Node){dis[v], v});
+                }
             }
-            int now = dijkstra();
-            ans = MIN(ans,  now);
         }
-        printf("%d\n", ans);
     }
+
+    void creat() {
+        cin >> n >> m;
+        init();
+        for(int i = 0; i < m; i++) {
+            int u, v, w;
+            cin >> u >> v >> w;   //
+            add(u, v, w);
+            add(v, u, w);
+        }
+    }
+
+    void output() {
+        for(int i = 1; i <= n; i++) {
+            printf("S to %d dis is : %d\n", i, dis[i]);
+        }
+    }
+
+}text;
+
+int main() {
+    text.creat();
+    text.Dijstra(1);
+    text.output();
     return 0;
 }

@@ -1,4 +1,3 @@
-//莫比乌斯函数前n项和
 #include<cstdio>
 #include<cstdlib>
 #include<algorithm>
@@ -30,7 +29,7 @@ inline int Sum(ll n){
   if (n<=MAXN) return miu[n];
   if (S.find(n)!=S.end()) return S[n];
   int tem=1; ll l,r;
-  for (l=2;l*l<=n;l++) tem-=Sum(n/l);  //这里的起点注意
+  for (l=2;l*l<=n;l++) tem-=Sum(n/l);
   for (ll t=n/l;l<=n;l=r+1,t--){
     r=n/t;
     tem-=(r-l+1)*Sum(t);

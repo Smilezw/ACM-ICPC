@@ -1,7 +1,3 @@
-/*欧拉函数
-欧拉函数的值等于不超过m并且和m互素的数的个数
-如果x和m互素 x^(elur(m)) = 1(mod m)
-求欧拉函数值  复杂度O(sqrt(n))*/
 ll eular(ll n) {
     ll ans = n;
     for(ll i = 2;i*i <= n;i++){
@@ -15,7 +11,6 @@ ll eular(ll n) {
     return ans;
 }
 
-//O(MAXN)时间筛出欧拉函数值的表
 const int MAXN = 1e7 + 5;
 const int N = 1e6 + 5;
 
