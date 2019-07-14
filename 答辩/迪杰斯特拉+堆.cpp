@@ -33,6 +33,20 @@ struct DIJSTRA {
         edge[v].push_back(Edge{v, u, w});
     }
 
+    void init() {
+        for(int i = 1; i <= n; i++) edge[i].clear();
+    }
+
+    void creat() {
+        cout << "--------无负环图迪杰斯特拉优化-------"  << endl;
+        cin >> n >> m;
+        for(int i = 0; i < m; i++) {
+            int u, v, w;
+            cin >> u >> v >> w;
+            add(u, v, w);
+        }
+    }
+
     int dis[N];    //弧长
     int vis[N];
 
@@ -65,31 +79,25 @@ struct DIJSTRA {
 
 DIJSTRA text;
 
-void creat() {
-    cout << "--------无负环图迪杰斯特拉优化-------"  << endl;
-    cout << "输入边数点数 ：" << endl;
-    cin >> text.n >> text.m;
-    cout << "输入边集：" << endl;
-    for(int i = 0; i < text.m; i++) {
-        int u, v, w;
-        cin >> u >> v >> w;
-        text.add(u, v, w);
+void output() {  //正确性检查
+    cout << "图大小 n  m  "  << text.n << " " << text.m << endl;
+    cout << "dis数组检查 " << endl;
+    int te;
+    te = (text.n <= 10 ? text.n : 10);
+    while(te--){
+        int t;
+        t = rand()%text.n + 1;
+        cout << "dis  " << t << " = " << text.dis[t] << endl;
     }
 }
 
-void output() {  //正确性检查
-    cout << "dis数组检查 " << endl;
-    for(int i = 1; i <= text.n; i++)
-        cout << "dis  " << i << " = " << text.dis[i] << endl;
-}
-
-void demo(){
-    creat();
-
+void solve(){
     double dur;
     clock_t start,end;
     start = clock();
 
+    text.init();
+    text.creat();
     text.Dijstra(1);       //算法过程  时间测试
 
     end = clock();
@@ -101,6 +109,21 @@ void demo(){
 }
 
 int main() {
-    demo();
+    /*
+    freopen("C:\\Users\\ASUS\\Desktop\\in2.txt","r",stdin);
+	freopen("C:\\Users\\ASUS\\Desktop\\out2.txt","w",stdout);
+    */
+    ///*
+    freopen("C:\\Users\\ASUS\\Desktop\\in1.txt","r",stdin);
+	freopen("C:\\Users\\ASUS\\Desktop\\dij + d.txt","w",stdout);
+    //*/
+    int T;
+    cin >> T;
+    int cas = 1;
+    while(T--) {
+        cout << "The case :  " << cas++ << endl;
+        solve();
+        cout << endl;
+    }
     return 0;
 }
