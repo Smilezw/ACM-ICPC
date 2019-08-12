@@ -11,8 +11,8 @@ void change(cpx y[],int len){
     int i,j,k;
     for(i = 1, j = len/2;i < len-1; i++){
         if(i < j) swap(y[i],y[j]);
-        //äº¤æ¢äº’ä¸ºå°æ ‡åè½¬çš„å…ƒç´ ï¼Œi<jä¿è¯äº¤æ¢ä¸€æ¬¡
-        //iåšæ­£å¸¸çš„+1ï¼Œjå·¦åè½¬ç±»å‹çš„+1,å§‹ç»ˆä¿æŒiå’Œjæ˜¯åè½¬çš„
+        //½»»»»¥ÎªĞ¡±ê·´×ªµÄÔªËØ£¬i<j±£Ö¤½»»»Ò»´Î
+        //i×öÕı³£µÄ+1£¬j×ó·´×ªÀàĞÍµÄ+1,Ê¼ÖÕ±£³ÖiºÍjÊÇ·´×ªµÄ
         k = len/2;
         while( j >= k){
             j -= k;
@@ -23,14 +23,14 @@ void change(cpx y[],int len){
 }
 
 void fft(cpx y[],int len,int on){
-    change(y,len);  //äºŒè¿›åˆ¶åè½¬
-    for(int h = 2; h <= len; h <<= 1){ //æšä¸¾é•¿åº¦ 2^1....2^m
-        cpx wn(cos(-on*2*PI/h),sin(-on*2*PI/h)); //å•ä½é•¿åº¦å¤æ ¹
-        for(int j = 0;j < len;j+=h){ //æšä¸¾æ¯ä¸€æ®µ
+    change(y,len);  //¶ş½øÖÆ·´×ª
+    for(int h = 2; h <= len; h <<= 1){ //Ã¶¾Ù³¤¶È 2^1....2^m
+        cpx wn(cos(-on*2*PI/h),sin(-on*2*PI/h)); //µ¥Î»³¤¶È¸´¸ù
+        for(int j = 0;j < len;j+=h){ //Ã¶¾ÙÃ¿Ò»¶Î
             cpx w(1,0);
-            for(int k = j;k < j+h/2;k++){ //æšä¸¾æ¯ä¸ªå€¼ è´è¶æ“ä½œ
-                cpx u = y[k];  //å¶æ•°
-                cpx t = w*y[k+h/2];  //å¥‡æ•°
+            for(int k = j;k < j+h/2;k++){ //Ã¶¾ÙÃ¿¸öÖµ ºûµû²Ù×÷
+                cpx u = y[k];  //Å¼Êı
+                cpx t = w*y[k+h/2];  //ÆæÊı
                 y[k] = u+t;
                 y[k+h/2] = u-t;
                 w = w*wn;

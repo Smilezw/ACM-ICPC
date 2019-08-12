@@ -1,61 +1,101 @@
-#include <bits/stdc++.h>
+#include <cstdio>
+#include <vector>
+#include <algorithm>
+#include <cstring>
+#include <iostream>
 using namespace std;
 
-typedef long long ll;
+const int N = 1e5 + 5;
 
-const int MAXN = 3e5 + 10;
+struct Edge {
+    int u, v, w;
+};
 
-int siz[MAXN], f[MAXN];
-int vis[MAXN];
-vector <int > G[MAXN];
-int n, allnode, root;
+int n, k;
+vector <Edge > edge[N];
+
+vector <int > dep;
+
+int f[N], s[N], d[N];  //最大子树  树大小  深度
+int allnode, root, maxdeep;
+int vis[N];
+
+int ans;
 
 void getroot(int u, int fa) {  //根部节点
-    siz[u] = 1; f[u] = 0;
-    int len = G[u].size();
+    s[u] = 1; f[u] = 0;
+    int len = edge[u].size();
     for(int i = 0; i < len; i++) {
-        int to = G[u][i];
+        int to = edge[u][i].v;
         if(vis[to] || to == fa) continue;
         getroot(to, u);
-        siz[u] += siz[to];
-        f[u] = max(f[u], siz[to]);
+        s[u] += s[to];
+        f[u] = max(f[u], s[to]);
     }
-    f[u] = max(f[u], allnode - siz[u]); //除当前点以外的所有子树
+    f[u] = max(f[u], allnode - s[u]); //除当前点以外的所有子树
     if(f[u] < f[root]) root = u;
 }
 
-int dep[MAXN], mxdep;
-int cnt[MAXN], nowcnt[MAXN];
-
 void getdeep(int u, int f) {   //深度
-    siz[u] = 1;
-    int len = G[u].size();
+    s[u] = 1;
+    dep.push_back(d[u]);
+    //cout << u << " " << dep[dep.size()-1] << endl;
+    int len = edge[u].size();
     for(int i = 0; i < len; i++) {
-        int to = G[u][i];
+        int to = edge[u][i].v;
         if(vis[to] || to == f) continue;
-        dep[to] = dep[u] + 1;
+        d[to] = d[u] + edge[u][i].w;
         getdeep(to, u);
-        mxdep = max(mxdep, dep[to]);
-        siz[u] += siz[to];
+        s[u] += s[to];
     }
 }
 
-
-ll cal(int u, int val) {  //计算贡献
-    ll ret = 0;
-
+int cal(int now, int dd) {
+    dep.clear();
+    d[now] = dd;
+    getdeep(now, 0);
+    sort(dep.begin(), dep.end());
+    int ret = 0;
+    for(int l = 0, r = dep.size() - 1; l < r;) {
+        //cout << "dad  " << dep[l] << " " << dep[r] << endl;
+        //cout << l << " " << r << endl;
+        if(dep[l] + dep[r] <= k) ret += r-l++;
+        else r--;
+    }
     return ret;
 }
 
-void point_Divede(int x) {
-    vis[x] = 1;
-    cal(x, 1);  //父节点的所有距离
-    int se = G[x].size();
-    for(int i = 0; i < se; i++) {
-        int to = G[x][i];
-        if(vis[to]) continue;
-        cal(to, -1);   //减去子树所有贡献
-        getroot(to, x);
-        point_Divede(root);
+void solve(int now) {
+    int u;
+    ans += cal(now, 0);
+    vis[now] = 1;
+    for(int i = 0; i < edge[now].size(); i++) {
+        int v = edge[now][i].v;
+        if(vis[v] == 0) {
+            ans = ans - cal(v, edge[now][i].w);
+            f[0] = allnode = s[v];
+            getroot(v, root = 0);
+            solve(root);
+        }
     }
+}
+
+int main() {
+    while(scanf("%d%d", &n, &k) && n && k) {
+        for(int i = 0; i <= n; i++) edge[i].clear();
+        memset(vis, 0, sizeof(vis));
+        ans = 0;
+        for(int i = 0; i < n-1; i++) {
+            int u, v, w;
+            scanf("%d%d%d", &u, &v, &w);
+            edge[u].push_back(Edge{u, v, w});
+            edge[v].push_back(Edge{v, u, w});
+        }
+        f[0] = allnode = n;
+        getroot(1, root = 0);
+        ans = 0;
+        solve(root);
+        cout << ans << endl;
+    }
+    return 0;
 }

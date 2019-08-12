@@ -1,15 +1,15 @@
 #pragma GCC optimize(3,"Ofast","inline")
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+const int mod = 1e9 + 7;
+
 inline int ad(int x,int y){x+=y;return x>=mod? x-mod:x;}
 inline int dc(int x,int y){x-=y;return x<0? x+mod:x;}
 inline int mul(int x,int y){return 1ll*x*y%mod;}
 
 //加速
-template <class T>
-inline void scan_d(T &ret) {
-	char c; ret=0;
-	while((c=getchar())<'0'||c>'9');
-	while(c>='0'&&c<='9') ret=ret*10+(c-'0'),c=getchar();
-}
 
 inline void out(int x) {
    if(x>9) out(x/10);
@@ -29,3 +29,6 @@ inline int _power(int a,int b)
         sum=(ll)sum*a%mod;
     return sum;
 }
+
+//快速乘
+(x*y-(ll)(((long double)x*y)/mod)*mod)%mod

@@ -1,8 +1,8 @@
-//åˆ†å—+fft
-//ä»¤Vä¸ºæœ€å¤§å€¼  Lä¸ºå—é•¿  åˆ†ä¸ºBå— Nä¸ªæ•°
-// å¤æ‚åº¦ O(BVlogV + L*L)
+//·Ö¿é+fft
+//ÁîVÎª×î´óÖµ  LÎª¿é³¤  ·ÖÎªB¿é N¸öÊı
+// ¸´ÔÓ¶È O(BVlogV + L*L)
 
-//åŒºé—´ä¸­çš„æ•° åŒºé—´å¤–çš„æ•° äº§ç”Ÿçš„å½±å“
+//Çø¼äÖĞµÄÊı Çø¼äÍâµÄÊı ²úÉúµÄÓ°Ïì
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -15,8 +15,8 @@ void change(cpx y[],int len){
     int i,j,k;
     for(i = 1, j = len/2;i < len-1; i++){
         if(i < j) swap(y[i],y[j]);
-        //äº¤æ¢äº’ä¸ºå°æ ‡åè½¬çš„å…ƒç´ ï¼Œi<jä¿è¯äº¤æ¢ä¸€æ¬¡
-        //iåšæ­£å¸¸çš„+1ï¼Œjå·¦åè½¬ç±»å‹çš„+1,å§‹ç»ˆä¿æŒiå’Œjæ˜¯åè½¬çš„
+        //½»»»»¥ÎªĞ¡±ê·´×ªµÄÔªËØ£¬i<j±£Ö¤½»»»Ò»´Î
+        //i×öÕı³£µÄ+1£¬j×ó·´×ªÀàĞÍµÄ+1,Ê¼ÖÕ±£³ÖiºÍjÊÇ·´×ªµÄ
         k = len/2;
         while( j >= k){
             j -= k;
@@ -27,14 +27,14 @@ void change(cpx y[],int len){
 }
 
 void fft(cpx y[],int len,int on){
-    change(y,len);  //äºŒè¿›åˆ¶åè½¬
-    for(int h = 2; h <= len; h <<= 1){ //æšä¸¾é•¿åº¦ 2^1....2^m
-        cpx wn(cos(-on*2*PI/h),sin(-on*2*PI/h)); //å•ä½é•¿åº¦å¤æ ¹
-        for(int j = 0;j < len;j+=h){ //æšä¸¾æ¯ä¸€æ®µ
+    change(y,len);  //¶ş½øÖÆ·´×ª
+    for(int h = 2; h <= len; h <<= 1){ //Ã¶¾Ù³¤¶È 2^1....2^m
+        cpx wn(cos(-on*2*PI/h),sin(-on*2*PI/h)); //µ¥Î»³¤¶È¸´¸ù
+        for(int j = 0;j < len;j+=h){ //Ã¶¾ÙÃ¿Ò»¶Î
             cpx w(1,0);
-            for(int k = j;k < j+h/2;k++){ //æšä¸¾æ¯ä¸ªå€¼ è´è¶æ“ä½œ
-                cpx u = y[k];  //å¶æ•°
-                cpx t = w*y[k+h/2];  //å¥‡æ•°
+            for(int k = j;k < j+h/2;k++){ //Ã¶¾ÙÃ¿¸öÖµ ºûµû²Ù×÷
+                cpx u = y[k];  //Å¼Êı
+                cpx t = w*y[k+h/2];  //ÆæÊı
                 y[k] = u+t;
                 y[k+h/2] = u-t;
                 w = w*wn;
@@ -77,20 +77,20 @@ void _fft() {
 
 void solve() {
     bin = 1;
-    while(bin < v*2+1) bin = bin << 1;  //æŠŠä¸Šé™è°ƒå¤§ç‚¹
+    while(bin < v*2+1) bin = bin << 1;  //°ÑÉÏÏŞµ÷´óµã
 
-    for(int i = 1; i <= g; i++) {  //æ¯ä¸€å—
-        for(int j = st[i-1]; i-1 && j <= ed[i-1]; j++) L[a[j]]++;  //å—å·¦è¾¹
-        for(int j = st[i]; j <= ed[i]; j++) R[a[j]]--;   //å—å³è¾¹
-        if(i > 1 && i < g) _fft();      //å—åœ¨ä¸­é—´æ—¶ è¿›è¡Œfft
+    for(int i = 1; i <= g; i++) {  //Ã¿Ò»¿é
+        for(int j = st[i-1]; i-1 && j <= ed[i-1]; j++) L[a[j]]++;  //¿é×ó±ß
+        for(int j = st[i]; j <= ed[i]; j++) R[a[j]]--;   //¿éÓÒ±ß
+        if(i > 1 && i < g) _fft();      //¿éÔÚÖĞ¼äÊ± ½øĞĞfft
         memset(pre, 0, sizeof(pre));
-        for(int j = st[i]; j <= ed[i]; j++) { //ç»Ÿè®¡å½“å‰å—
+        for(int j = st[i]; j <= ed[i]; j++) { //Í³¼Æµ±Ç°¿é
             int t = a[j] + a[j];
-            for(int k = st[i]; k < j; k++)  //å½“å‰å…ƒç´ ä¸ºä¸­é—´å€¼ å—å†…å·¦é¢ä¸å—å¤–å³è¾¹ç»„åˆ
+            for(int k = st[i]; k < j; k++)  //µ±Ç°ÔªËØÎªÖĞ¼äÖµ ¿éÄÚ×óÃæÓë¿éÍâÓÒ±ß×éºÏ
                 if(t - a[k] > 0 && t - a[k] <= v) ans = ans + R[t-a[k]];
-            for(int k = j + 1;k <= ed[i]; k++)  //åŒç† ä½†æ˜¯å¤šåŠ ä¸€ä¸ªéƒ½åœ¨å—å†…çš„æƒ…å†µ
+            for(int k = j + 1;k <= ed[i]; k++)  //Í¬Àí µ«ÊÇ¶à¼ÓÒ»¸ö¶¼ÔÚ¿éÄÚµÄÇé¿ö
                 if(t - a[k] > 0 && t- a[k] <= v) ans = ans + L[t-a[k]] + pre[t-a[k]];
-            if(i > 1 && i < g) ans = ans + c[t];  //å—å¤–ç›´æ¥å·ç§¯
+            if(i > 1 && i < g) ans = ans + c[t];  //¿éÍâÖ±½Ó¾í»ı
             pre[a[j]]++;
         }
 
@@ -99,15 +99,15 @@ void solve() {
 
 int main() {
     int n;
-    len = 2000;      //å—é•¿
+    len = 2000;      //¿é³¤
     scanf("%d", &n);
     for(int i = 1; i <= n; i++) {
         scanf("%d", &a[i]);
-        R[a[i]]++;  //å³åŒºé—´å…¨ç»™è®°å½•ä¸Š
+        R[a[i]]++;  //ÓÒÇø¼äÈ«¸ø¼ÇÂ¼ÉÏ
         pos[i] = (i-1)/len + 1;
         v = max(v, a[i]);
     }
-    g = pos[n];  //å—æ•°
+    g = pos[n];  //¿éÊı
     for(int i = 1; i <= g; i++)
         st[i] = (i-1)*len + 1, ed[i] = i*len;
     ed[g] = min(n, ed[g]);
