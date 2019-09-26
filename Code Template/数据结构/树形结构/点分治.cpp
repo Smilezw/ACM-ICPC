@@ -5,22 +5,26 @@
 #include <iostream>
 using namespace std;
 
+typedef long long ll;
+
 const int N = 1e5 + 5;
 
 struct Edge {
-    int u, v, w;
+    ll u, v, w;
 };
 
-int n, k;
+ll n;
 vector <Edge > edge[N];
 
 vector <int > dep;
 
-int f[N], s[N], d[N];  //最大子树  树大小  深度
-int allnode, root, maxdeep;
+ll f[N], s[N], d[N];  //最大子树  树大小  深度
+ll allnode, root, maxdeep;
 int vis[N];
 
-int ans;
+ll w[5];
+ll t[5];
+ll ans[5];
 
 void getroot(int u, int fa) {  //根部节点
     s[u] = 1; f[u] = 0;
@@ -39,7 +43,6 @@ void getroot(int u, int fa) {  //根部节点
 void getdeep(int u, int f) {   //深度
     s[u] = 1;
     dep.push_back(d[u]);
-    //cout << u << " " << dep[dep.size()-1] << endl;
     int len = edge[u].size();
     for(int i = 0; i < len; i++) {
         int to = edge[u][i].v;
@@ -50,29 +53,49 @@ void getdeep(int u, int f) {   //深度
     }
 }
 
-int cal(int now, int dd) {
+void cal(ll now, ll dd, int com) {
     dep.clear();
     d[now] = dd;
     getdeep(now, 0);
-    sort(dep.begin(), dep.end());
-    int ret = 0;
-    for(int l = 0, r = dep.size() - 1; l < r;) {
-        //cout << "dad  " << dep[l] << " " << dep[r] << endl;
-        //cout << l << " " << r << endl;
-        if(dep[l] + dep[r] <= k) ret += r-l++;
-        else r--;
+    w[0] = w[1] = w[2] = 0;
+    t[0] = t[1] = t[2] = 0;
+    for(int i = 0; i < dep.size(); i++) {
+        w[dep[i]%3] += dep[i];
+        t[dep[i]%3]++;
     }
-    return ret;
+    if(com == 1) {
+        ans[0] += (w[1]*t[2] + w[2]*t[1] + w[0] );
+        ans[1] += (w[0]*t[1] + w[1]*t[0] + w[1] );
+        ans[2] += (w[0]*t[2] + w[2]*t[0] + w[2] );
+        if(t[0]) ans[0] = ans[0] + w[0]*(t[0]-1);
+        if(t[1]) ans[2] = ans[2] + w[1]*(t[1]-1);
+        if(t[2]) ans[1] = ans[1] + w[2]*(t[2]-1);
+    }
+    else {
+        ans[0] -= (w[1]*t[2] + w[2]*t[1] + w[0] );
+        ans[1] -= (w[0]*t[1] + w[1]*t[0] + w[1] );
+        ans[2] -= (w[0]*t[2] + w[2]*t[0] + w[2] );
+        if(t[0]) ans[0] = ans[0] - w[0]*(t[0]-1);
+        if(t[1]) ans[2] = ans[2] - w[1]*(t[1]-1);
+        if(t[2]) ans[1] = ans[1] - w[2]*(t[2]-1);
+    }
+    /*
+    cout << "t[0]  " << t[0] << " " << w[0] << endl;
+    cout << "t[1]  " << t[1] << " " << w[1] << endl;
+    cout << "t[2]  " << t[2] << " " << w[2] << endl;
+    cout << "adadad " << ans[0] << " " << ans[1] << " " << ans[2] << endl;
+    */
 }
 
 void solve(int now) {
     int u;
-    ans += cal(now, 0);
+    cal(now, 0, 1);
+    //cout << "vis  " << now << endl;
     vis[now] = 1;
     for(int i = 0; i < edge[now].size(); i++) {
         int v = edge[now][i].v;
         if(vis[v] == 0) {
-            ans = ans - cal(v, edge[now][i].w);
+            cal(v, edge[now][i].w, 0);
             f[0] = allnode = s[v];
             getroot(v, root = 0);
             solve(root);
@@ -81,21 +104,18 @@ void solve(int now) {
 }
 
 int main() {
-    while(scanf("%d%d", &n, &k) && n && k) {
-        for(int i = 0; i <= n; i++) edge[i].clear();
-        memset(vis, 0, sizeof(vis));
-        ans = 0;
-        for(int i = 0; i < n-1; i++) {
-            int u, v, w;
-            scanf("%d%d%d", &u, &v, &w);
-            edge[u].push_back(Edge{u, v, w});
-            edge[v].push_back(Edge{v, u, w});
-        }
-        f[0] = allnode = n;
-        getroot(1, root = 0);
-        ans = 0;
-        solve(root);
-        cout << ans << endl;
+    scanf("%d", &n);
+    for(int i = 0; i < n-1; i++) {
+        int u, v, w;
+        scanf("%d%d%d", &u, &v, &w);
+        u++, v++;
+        edge[u].push_back(Edge{u, v, w});
+        edge[v].push_back(Edge{v, u, w});
     }
+    f[0] = allnode = n;
+    getroot(1, root = 0);
+    ans[0] = ans[1] = ans[2] = 0;
+    solve(root);
+    cout << ans[0] << " " << ans[1] << " " << ans[2] << endl;
     return 0;
 }

@@ -1,28 +1,28 @@
-// ä¼ å…¥çš„å‚æ•° point a,b,c; ä¸‰è§’å½¢é¡¶ç‚¹
-double area(point a,point b,point c) { return(fabs(det(b-a,c-a))/2); }// é¢ç§¯
+// ´«ÈëµÄ²ÎÊı point a,b,c; Èı½ÇĞÎ¶¥µã
+double area(point a,point b,point c) { return(fabs(det(b-a,c-a))/2); }// Ãæ»ı
 
-point barycenter(point a,point b,point c){ //é‡å¿ƒ
+point barycenter(point a,point b,point c){ //ÖØĞÄ
   return point ( (a.x+b.x+c.x)/3.0, (a.y+b.y+c.y)/3.0 );
 }
 
-point orthocenter(point a,point b,point c) { //å‚å¿ƒ
+point orthocenter(point a,point b,point c) { //´¹ĞÄ
   double dx,dy,d=(c.x-b.x)*(c.y-a.y)-(c.x-a.x)*(c.y-b.y);
   dx = (a.y*(c.y-b.y)+a.x*(c.x-b.x))*(c.y-a.y)-(b.y*(c.y-a.y)+b.x*(c.x-a.x))*(c.y-b.y);
   dy = (c.x-b.x)*(b.y*(c.y-a.y)+b.x*(c.x-a.x))-(c.x-a.x)*(a.y*(c.y-b.y)+a.x*(c.x-b.x));
   return point(dx/d, dy/d);
 }
 
-int circumcenter(point a,point b,point c) {  // å¤–å¿ƒï¼Œç›´è§’ä¸‰è§’å½¢é¡»ç‰¹åˆ¤
+int circumcenter(point a,point b,point c) {  // ÍâĞÄ£¬Ö±½ÇÈı½ÇĞÎĞëÌØÅĞ
   double A = dist(b,c), B = dist(a,c), C = dist(a,b);
   double P = (SQR(A) + SQR(B) + SQR(C))/2.0;
   double Q = 1.0/(1/(P-SQR(A)) + 1/(P-SQR(B)) + 1/(P-SQR(C)));
-  double R = sqrt(P-Q)/2; //R ä¸ºå¤–æ¥åœ†åŠå¾„ï¼Œéœ€è¦æ—¶å¯ç”¨ï¼Œå¦åˆ™å¯åˆ å»
+  double R = sqrt(P-Q)/2; //R ÎªÍâ½ÓÔ²°ë¾¶£¬ĞèÒªÊ±¿ÉÓÃ£¬·ñÔò¿ÉÉ¾È¥
   double d1 = Q/(P-SQR(A)),d2 = Q/(P-SQR(B)),d3 = Q/(P-SQR(C));
   return (1-d1)/2.0*a + (1-d2)/2.0*b + (1-d3)/2.0*c;
 }
 
 point incenter(point a,point b,point c) {
   double A = dist(b,c),B = dist(a,c), C = dist(a,b);
-  double r = 2*area(a,b,c)/(A+B+C); //r ä¸ºå†…åˆ‡åœ†åŠå¾„ï¼Œéœ€è¦æ—¶å¯ç”¨ï¼Œå¦åˆ™å¯åˆ å»
+  double r = 2*area(a,b,c)/(A+B+C); //r ÎªÄÚÇĞÔ²°ë¾¶£¬ĞèÒªÊ±¿ÉÓÃ£¬·ñÔò¿ÉÉ¾È¥
   return point( (A*a.x + B*b.x + C*c.x)/(A+B+C), (A*a.y + B*b.y + C*c.y)/(A+B+C) );
 }

@@ -3,12 +3,12 @@ struct Circle {
   bool contain(const Circle &that, const int &c) const {
     return sign(r - (o - that.o).abs() - that.r) > c;
   }
-  bool disjuct(const Circle &that, const int &c) const { // c=0 ä¸ºä¸¥æ ¼ , c=-1 ä¸ºä¸ä¸¥æ ¼,
+  bool disjuct(const Circle &that, const int &c) const { // c=0 ÎªÑÏ¸ñ , c=-1 Îª²»ÑÏ¸ñ,
     return sign((o - that.o).abs() - r - that.r) > c;
   }
 };
 
-bool isCL(Circle a, Point l1, Point l2, Point &p1, Point &p2) { // æ±‚åœ†ä¸ç›´çº¿çš„äº¤ç‚¹ï¼ŒåŒ…å«ç›¸åˆ‡,
+bool isCL(Circle a, Point l1, Point l2, Point &p1, Point &p2) { // ÇóÔ²ÓëÖ±ÏßµÄ½»µã£¬°üº¬ÏàÇĞ,
     if (sign(distPL(a.o, l1, l2) - a.r) > 0) return false;
     Point o2 = a.o + (l2 - l1).rot90(); o2 = isSS(a.o, o2, l1, l2);
     double t = newSqrt(a.r * a.r - (o2 - a.o).abs2());
@@ -16,7 +16,7 @@ bool isCL(Circle a, Point l1, Point l2, Point &p1, Point &p2) { // æ±‚åœ†ä¸ç›´ç
     return true;
 }
 
-bool isCC(Circle a, Circle b, Point &p1, Point &p2) { // æ±‚åœ†ä¸åœ†çš„äº¤ç‚¹ï¼ŒåŒ…å«ç›¸åˆ‡ï¼Œå‡è®¾æ— é‡åœ†,
+bool isCC(Circle a, Circle b, Point &p1, Point &p2) { // ÇóÔ²ÓëÔ²µÄ½»µã£¬°üº¬ÏàÇĞ£¬¼ÙÉèÎŞÖØÔ²,
     if (a.contain(b, 0) || b.contain(a, 0) || a.disjuct(b, 0)) return false;
     double s1 = (a.o - b.o).abs();
     double s2 = (a.r * a.r - b.r * b.r) / s1;
@@ -28,7 +28,7 @@ bool isCC(Circle a, Circle b, Point &p1, Point &p2) { // æ±‚åœ†ä¸åœ†çš„äº¤ç‚¹ï¼
     return true;
 }
 
-bool contain(vector<Point> polygon, Point p) { // åˆ¤æ–­ç‚¹ p æ˜¯å¦è¢« å¤šè¾¹å½¢åŒ…å«ï¼ŒåŒ…æ‹¬è½åœ¨è¾¹ç•Œä¸Š,
+bool contain(vector<Point> polygon, Point p) { // ÅĞ¶Ïµã p ÊÇ·ñ±» ¶à±ßĞÎ°üº¬£¬°üÀ¨ÂäÔÚ±ß½çÉÏ,
     int ret = 0, n = polygon.size();
     for(int i = 0; i < n; ++ i) {
         Point u = polygon[i], v = polygon[(i + 1) % n];
@@ -40,7 +40,7 @@ bool contain(vector<Point> polygon, Point p) { // åˆ¤æ–­ç‚¹ p æ˜¯å¦è¢« å¤šè¾¹å½
     return ret & 1;
 }
 
-vector<Point> convexCut(const vector<Point>&ps, Point q1, Point q2) { // ç”¨åŠå¹³é¢ (q1,q2) çš„é€†æ—¶é’ˆæ–¹å‘å»åˆ‡å‡¸å¤šè¾¹å½¢,
+vector<Point> convexCut(const vector<Point>&ps, Point q1, Point q2) { // ÓÃ°ëÆ½Ãæ (q1,q2) µÄÄæÊ±Õë·½ÏòÈ¥ÇĞÍ¹¶à±ßĞÎ,
     vector<Point> qs; int n = ps.size();
     for (int i = 0; i < n; ++i) {
         Point p1 = ps[i], p2 = ps[(i + 1) % n];

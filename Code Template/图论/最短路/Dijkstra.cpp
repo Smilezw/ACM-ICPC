@@ -54,9 +54,8 @@ void Dijstra(int s) {
         int u = t.pos;
         if(vis[u]) continue;
         vis[u] = 1;
-        int len = edge[u].size();
         for(int i = head[u]; i != -1; i = edge[i].next) {
-            Edge v = edge[i].to;
+            int v = edge[i].to;
             if(dis[v] > dis[u] + edge[i].w) {
                 dis[v] = dis[u] + edge[i].w;
                 q.push(Node {dis[v], v});

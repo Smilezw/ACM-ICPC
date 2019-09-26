@@ -1,5 +1,5 @@
-//æ¬§æ‹‰å®šç†  ç‚¹ + é¢ = è¾¹ + 2 ï¼ˆå¹³é¢å›¾ï¼‰
-//æ‹“æ‰‘å®šç†  ç‚¹ + é¢ = æ£± + 2 ï¼ˆç«‹ä½“å›¾ï¼‰
+//Å·À­¶¨Àí  µã + Ãæ = ±ß + 2 £¨Æ½ÃæÍ¼£©
+//ÍØÆË¶¨Àí  µã + Ãæ = Àâ + 2 £¨Á¢ÌåÍ¼£©
 const double eps = 1e-8;
 const double PI = acoss(-1.0);
 int sgn(double x) {
@@ -18,39 +18,39 @@ struct Point {
     Point operator -(const Point &b)const {
         return Point(x - b.x, y - b.y);
     }
-    //å‰ç§¯
+    //²æ»ı
     double operator ^(const Point &b)const {
         return x * b.y - y * b.x;
     }
-    //ç‚¹ç§¯
+    //µã»ı
     double operator *(const Point &b)const {
         return x * b.x + y * b.y;
     }
-    //ç»•åŸç‚¹æ—‹è½¬è§’åº¦Bï¼ˆå¼§åº¦å€¼ï¼‰ï¼Œåx,yçš„å˜åŒ–
+    //ÈÆÔ­µãĞı×ª½Ç¶ÈB£¨»¡¶ÈÖµ£©£¬ºóx,yµÄ±ä»¯
     void transXY(double B) {
         double tx = x, ty = y;
         x = tx * cos(B) - ty * sin(B);
         y = tx * sin(B) + ty * cos(B);
     }
 };
-//Lineçš„å®šä¹‰
+//LineµÄ¶¨Òå
 struct Line {
     Point s, e;
     double k;
     Line(){}
     Line(Point _s, Point _e) {
         s = _s; e = _e;
-        k = atan2(e.y - s.y,e.x - s.x); 
+        k = atan2(e.y - s.y,e.x - s.x);
     }
-    //ä¸¤ç›´çº¿ç›¸äº¤æ±‚äº¤ç‚¹
-    //ç¬¬ä¸€ä¸ªå€¼ä¸º0è¡¨ç¤ºç›´çº¿é‡åˆï¼Œä¸º1è¡¨ç¤ºå¹³è¡Œï¼Œä¸º0è¡¨ç¤ºç›¸äº¤ï¼Œä¸º2æ˜¯ç›¸äº¤
-    //åªæœ‰ç¬¬ä¸€ä¸ªå€¼ä¸º2æ—¶ï¼Œäº¤ç‚¹æ‰æœ‰æ„ä¹‰
+    //Á½Ö±ÏßÏà½»Çó½»µã
+    //µÚÒ»¸öÖµÎª0±íÊ¾Ö±ÏßÖØºÏ£¬Îª1±íÊ¾Æ½ĞĞ£¬Îª0±íÊ¾Ïà½»£¬Îª2ÊÇÏà½»
+    //Ö»ÓĞµÚÒ»¸öÖµÎª2Ê±£¬½»µã²ÅÓĞÒâÒå
     pair<int, Point> operator &(const Line &b)const {
         Point res = s;
         if (sgn((s - e) ^ (b.s - b.e)) == 0) {
             if (sgn ((s - b.e) ^ (b.s - b.e)) == 0)
-                return make_pair(0, res);//é‡åˆ
-            else return make_pair(1, res);//å¹³è¡Œ
+                return make_pair(0, res);//ÖØºÏ
+            else return make_pair(1, res);//Æ½ĞĞ
         }
         double t = ((s - b.s) ^ (b.s - b.e)) / ((s - e) ^ (b.s - b.e));
         res.x += (e.x - s.x) * t;
@@ -58,11 +58,11 @@ struct Line {
         return make_pair(2, res);
     }
 };
-//ä¸¤ç‚¹é—´è·ç¦»
+//Á½µã¼ä¾àÀë
 double dist(Point a, Point b) {
     return sqrt((a - b) * (a - b));
 }
-//åˆ¤æ–­çº¿æ®µç›¸äº¤
+//ÅĞ¶ÏÏß¶ÎÏà½»
 bool inter(Line l1,Line l2)
 {
     return
@@ -73,12 +73,12 @@ bool inter(Line l1,Line l2)
         sgn((l2.s-l1.s)^(l1.e-l1.s))*sgn((l2.e-l1.s)^(l1.e-l1.s)) <= 0 &&
         sgn((l1.s-l2.s)^(l2.e-l2.s))*sgn((l1.e-l2.s)^(l2.e-l2.s)) <= 0;
 }
-//åˆ¤æ–­ç›´çº¿å’Œçº¿æ®µç›¸äº¤
-bool Seg_inter_line(Line l1, Line l2) {//åˆ¤æ–­ç›´çº¿l1å’Œçº¿æ®µl2æ˜¯å¦ç›¸äº¤
+//ÅĞ¶ÏÖ±ÏßºÍÏß¶ÎÏà½»
+bool Seg_inter_line(Line l1, Line l2) {//ÅĞ¶ÏÖ±Ïßl1ºÍÏß¶Îl2ÊÇ·ñÏà½»
     return sgn((l2.s - l1.e) ^ (l1.s - l1.e)) * sgn((l2.e - l1.e) ^ (l1.s - l1.e)) <= 0;
 }
-//ç‚¹åˆ°ç›´çº¿çš„è·ç¦»
-//è¿”å›ä¸ºresult,æ˜¯ç‚¹åˆ°ç›´çº¿æœ€è¿‘çš„ç‚¹
+//µãµ½Ö±ÏßµÄ¾àÀë
+//·µ»ØÎªresult,ÊÇµãµ½Ö±Ïß×î½üµÄµã
 Point PointToLine(Point P, Line L) {
     Point result;
     double t = ((P - L.s) * (L.e - L.s)) / ((L.e - L.s) * (L.e - L.s));
@@ -86,8 +86,8 @@ Point PointToLine(Point P, Line L) {
     result.y = L.s.y + (L.e.y - L.s.y) * t;
     return result;
 }
-//ç‚¹åˆ°çº¿æ®µçš„è·ç¦»
-//è¿”å›ç‚¹åˆ°çº¿æ®µæœ€è¿‘
+//µãµ½Ïß¶ÎµÄ¾àÀë
+//·µ»Øµãµ½Ïß¶Î×î½ü
 Point NearestPointToLineSeg(Point P, Line L) {
     Point result;
     double t = ((P - L.s) * (L.e - L.s)) / ((L.e - L.s) * (L.e - L.s));
@@ -102,28 +102,28 @@ Point NearestPointToLineSeg(Point P, Line L) {
     }
     return result;
 }
-//è®¡ç®—å¤šè¾¹å½¢é¢ç§¯
-//ç‚¹çš„ç¼–å·ä»0~n-1
+//¼ÆËã¶à±ßĞÎÃæ»ı
+//µãµÄ±àºÅ´Ó0~n-1
 double CalcArea(Point p[], int n) {
     double res = 0;
     for (int i = 0; i < n; i++)
         res += (p[i] ^ p[(i+1)%n]) / 2;
     return fabs(res);
 }
-//åˆ¤æ–­ç‚¹åœ¨çº¿æ®µä¸Š
+//ÅĞ¶ÏµãÔÚÏß¶ÎÉÏ
 bool OnSeg(Point P, Line L) {
     return
     sgn((L.s - P) ^ (L.e - P)) == 0 &&
     sgn((P.x - L.s.x) * (P.x - L.e.x)) <= 0 &&
     sgn((P.y - L.s.y) * (P.y - L.e.y)) <= 0;
 }
-//åˆ¤æ–­ç‚¹åœ¨å‡¸å¤šè¾¹å½¢å†…
-//ç‚¹å½¢æˆä¸€ä¸ªå‡¸åŒ…ï¼Œè€Œä¸”æŒ‰é€†æ—¶é’ˆæ’åº(å¦‚æœæ˜¯é¡ºæ—¶é’ˆæŠŠé‡Œé¢çš„<0æ”¹ä¸º>0)
-//ç‚¹çš„ç¼–å·ï¼š0~n-1
-//è¿”å›å€¼
-//-1ï¼šç‚¹åœ¨å‡¸å¤šè¾¹å½¢å¤–
-//0ï¼šç‚¹åœ¨å‡¸å¤šè¾¹å½¢è¾¹ç•Œä¸Š
-//1ï¼šåˆ¤æ–­ç‚¹åœ¨å‡¸å¤šè¾¹å½¢å†…
+//ÅĞ¶ÏµãÔÚÍ¹¶à±ßĞÎÄÚ
+//µãĞÎ³ÉÒ»¸öÍ¹°ü£¬¶øÇÒ°´ÄæÊ±ÕëÅÅĞò(Èç¹ûÊÇË³Ê±Õë°ÑÀïÃæµÄ<0¸ÄÎª>0)
+//µãµÄ±àºÅ£º0~n-1
+//·µ»ØÖµ
+//-1£ºµãÔÚÍ¹¶à±ßĞÎÍâ
+//0£ºµãÔÚÍ¹¶à±ßĞÎ±ß½çÉÏ
+//1£ºÅĞ¶ÏµãÔÚÍ¹¶à±ßĞÎÄÚ
 int inConvexPoly(Point a, Point p[], int n) {
     for (int i = 0; i < n; i++) {
         if (sgn((p[i] - a) ^ (p[(i+1)%n] - a)) < 0) return -1;
@@ -131,24 +131,24 @@ int inConvexPoly(Point a, Point p[], int n) {
     }
     return 1;
 }
-//åˆ¤æ–­ç‚¹åœ¨ä»»æ„å¤šè¾¹å½¢å†…
-//å°„çº¿æ³•ï¼Œpoly[]çš„é¡¶ç‚¹æ•°è¦å¤§äºç­‰äº3ï¼Œç‚¹çš„ç¼–å·0~n-1
-//è¿”å›å€¼
-//-1:ç‚¹åœ¨å‡¸å¤šè¾¹å½¢å¤–
-//0ï¼šç‚¹åœ¨å‡¸å¤šè¾¹å½¢è¾¹ç•Œä¸Š
-//1:åˆ¤æ–­ç‚¹åœ¨å‡¸å¤šè¾¹å½¢å†…
+//ÅĞ¶ÏµãÔÚÈÎÒâ¶à±ßĞÎÄÚ
+//ÉäÏß·¨£¬poly[]µÄ¶¥µãÊıÒª´óÓÚµÈÓÚ3£¬µãµÄ±àºÅ0~n-1
+//·µ»ØÖµ
+//-1:µãÔÚÍ¹¶à±ßĞÎÍâ
+//0£ºµãÔÚÍ¹¶à±ßĞÎ±ß½çÉÏ
+//1:ÅĞ¶ÏµãÔÚÍ¹¶à±ßĞÎÄÚ
 int inPoly(Point p, Point poly[], int n) {
     int cnt;
     Line ray, side;
     cnt = 0;
     ray.s = p;
     ray.e.y = p.y;
-    ray.e.x = -100000000000.0;//-INFï¼Œæ³¨æ„å–å€¼é˜²æ­¢è¶Šç•Œ
+    ray.e.x = -100000000000.0;//-INF£¬×¢ÒâÈ¡Öµ·ÀÖ¹Ô½½ç
     for (int i = 0; i < n; i++) {
         side.s = poly[i];
         side.e = poly[(i+1)%n];
         if (OnSeg(p, side)) return 0;
-        //å¦‚æœå¹³è¡Œè½´åˆ™ä¸è€ƒè™‘
+        //Èç¹ûÆ½ĞĞÖáÔò²»¿¼ÂÇ
         if (sgn(side.s.y - side.e.y) == 0) continue;
         if (OnSeg(side.s ,ray)) {
             if (sgn(side.s.y - side.e.y) > 0) cnt++
@@ -161,10 +161,10 @@ int inPoly(Point p, Point poly[], int n) {
     if (cnt % 2 == 1) return 1;
     else return -1;
 }
-//åˆ¤æ–­å‡¸å¤šè¾¹å½¢
-//å…è®¸å…±çº¿è¾¹
-//ç‚¹å¯ä»¥æ˜¯é¡ºæ—¶é’ˆç»™å‡ºä¹Ÿå¯ä»¥æ˜¯é€†æ—¶é’ˆç»™å‡º
-//ç‚¹çš„ç¼–å·1~n-1
+//ÅĞ¶ÏÍ¹¶à±ßĞÎ
+//ÔÊĞí¹²Ïß±ß
+//µã¿ÉÒÔÊÇË³Ê±Õë¸ø³öÒ²¿ÉÒÔÊÇÄæÊ±Õë¸ø³ö
+//µãµÄ±àºÅ1~n-1
 bool isconvex(Point poly[], int n) {
     bool s[3];
     memset(s, false, sizeof(s));

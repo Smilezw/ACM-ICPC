@@ -42,19 +42,24 @@ ll cal(ll n, ll i){
 ll n;
 int main(){
     init();
-    cin >> n;
-    ll ans = quickpow(3ll, n*n) - quickpow( quickpow(3ll, n) - 3, n); //每一列至少一种颜色的方法
-    for(ll i = 1; i <= n; i++){    //枚举1个颜色行的数量
-        ll now = 3*quickpow( (quickpow(3, (n-i)) - 1), n) %mod;  //整行颜色相同的行的颜色都一样
-        now += (quickpow(3,i) - 3)*quickpow(3, (n-i)*n); //整行颜色相同的行颜色不一样
-        now %= mod;
-        now *= cal(n, i);
-        now %= mod;
-        if(i&1)
-            ans = (ans + now)%mod;
-        else
-            ans = (ans - now + mod)%mod;
+    int T;
+    cin >> T;
+    while(T--){
+        cin >> n;
+        ll ans = quickpow(3ll, n*n) - quickpow( quickpow(3ll, n) - 3, n); //每一列至少一种颜色的方法
+        for(ll i = 1; i <= n; i++){    //枚举1个颜色行的数量
+            ll now = 3*quickpow( (quickpow(3, (n-i)) - 1), n) %mod;  //整行颜色相同的行的颜色都一样
+            now += (quickpow(3,i) - 3)*quickpow(3, (n-i)*n); //整行颜色相同的行颜色不一样
+            now %= mod;
+            now *= cal(n, i);
+            now %= mod;
+            if(i&1)
+                ans = (ans + now)%mod;
+            else
+                ans = (ans - now + mod)%mod;
+        }
+        cout << ans << endl;
     }
-    cout << ans << endl;
+
     return 0;
 }
