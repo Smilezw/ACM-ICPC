@@ -27,7 +27,7 @@ void add_edge(int u,int v)
     E[si].next=head[u];
     head[u]=si++;
 }
-int get_root(int root)
+int get_root(int root)  //ตüด๚ฟํหั
 {
     int l=0,r=0,res=N+1;fa[root]=0;
     for(que[r++]=root;l<r;l++){
