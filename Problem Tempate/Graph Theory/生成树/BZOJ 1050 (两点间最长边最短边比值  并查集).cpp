@@ -65,6 +65,8 @@ void kls(int x) {
 }
 
 int main() {
+    freopen("C:\\Users\\ASUS\\Desktop\\1in.txt", "r" ,stdin);
+    freopen("C:\\Users\\ASUS\\Desktop\\1out.txt", "w" ,stdout);
     n = gi(), m = gi();
     for(int i = 0; i < m; i++) {
         int u, v, w;
@@ -76,7 +78,7 @@ int main() {
     a = inf, b = 1, flag = 0;
     for(int i = 0; i < m; i++) kls(i);
     int d = gcd(a, b);
-    if(flag == 0) cout << "IMPOSSIBLE" << endl;
+    if(flag == 0) cout << "GG" << endl;
     else {
         if(b/d == 1)
             printf("%d\n", a/d);

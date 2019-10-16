@@ -1,159 +1,127 @@
-#include <bits/stdc++.h>
+
+#include<cstdio>
+#include<complex>
+#include<iostream>
 using namespace std;
-#pragma comment(linker, "/STACK:102400000,102400000")
-#define ls i<<1
-#define rs ls | 1
-#define mid ((ll+rr)>>1)
-#define pii pair<int,int>
-#define MP make_pair
 typedef long long LL;
-typedef unsigned long long ULL;
-const long long INF = 1e18+1LL;
-const double pi = acos(-1.0);
-const int N = 3e5+20, M = 1e6+10, mod = 1e9+7,inf = 2e9;
-
-
-struct Complex {
-    double r , i ;
-    Complex () {}
-    Complex ( double r , double i ) : r ( r ) , i ( i ) {}
-    Complex operator + ( const Complex& t ) const {
-        return Complex ( r + t.r , i + t.i ) ;
-    }
-    Complex operator - ( const Complex& t ) const {
-        return Complex ( r - t.r , i - t.i ) ;
-    }
-    Complex operator * ( const Complex& t ) const {
-        return Complex ( r * t.r - i * t.i , r * t.i + i * t.r ) ;
-    }
-} ;
-
-void FFT ( Complex y[] , int n , int rev ) {
-    for ( int i = 1 , j , t , k ; i < n ; ++ i ) {
-        for ( j = 0 , t = i , k = n >> 1 ; k ; k >>= 1 , t >>= 1 ) j = j << 1 | t & 1 ;
-        if ( i < j ) swap ( y[i] , y[j] ) ;
-    }
-    for ( int s = 2 , ds = 1 ; s <= n ; ds = s , s <<= 1 ) {
-        Complex wn = Complex ( cos ( rev * 2 * pi / s ) , sin ( rev * 2 * pi / s ) ) , w ( 1 , 0 ) , t ;
-        for ( int k = 0 ; k < ds ; ++ k , w = w * wn ) {
-            for ( int i = k ; i < n ; i += s ) {
-                y[i + ds] = y[i] - ( t = w * y[i + ds] ) ;
-                y[i] = y[i] + t ;
-            }
-        }
-    }
-    if ( rev == -1 ) for ( int i = 0 ; i < n ; ++ i ) y[i].r /= n ;
+const int Mn=200005;
+const double Pi=acos(-1);
+struct Edge{int to,next;}w[Mn];
+int n,cnt=0,h[Mn],vst[Mn],minn,tg,s[Mn],sz,prm[Mn];
+LL sum[Mn],sp[Mn],sn[Mn];
+complex<double>ft[Mn],fft1[Mn],fft2[Mn];
+void FFT(complex<double>A[],int n,int ty){
+	 int i,j,k,m;
+	 complex<double>t0,t1;
+	 for(i=0;i<n;i++){
+	 	for(j=0,k=i,m=1;m<n;m<<=1,j=(j<<1)|(k&1),k>>=1);
+	 	if(i<j)t0=A[i],A[i]=A[j],A[j]=t0;
+	 }
+	 ft[0]=1;
+	 for(m=1;m<n;m<<=1){
+	 	t0=complex<double>(cos(Pi/m),ty*sin(Pi/m));
+	 	for(i=1;i<m;i++)ft[i]=ft[i-1]*t0;
+	 	for(k=0;k<n;k+=(m<<1))
+	 	  for(i=k;i<k+m;i++){
+	 	  	t0=A[i];t1=A[i+m]*ft[i-k];
+	 	  	A[i]=t0+t1;A[i+m]=t0-t1;
+		  }
+	 }
+	 if(ty==1)return;
+	 for(t0=1.0/n,i=0;i<n;i++)A[i]*=t0;
 }
-Complex s[N],t[N];
-
-int vis[N],f[N],siz[N],n,allnode,root;
-int P[N];
-vector<int > G[N];
-void init() {
-    for(int i = 2; i <= 2*n; ++i) {
-        if(!P[i]) {
-            for(int j = i+i; j <= 2*n; j += i)
-                P[j] = 1;
-        }
-    }
-    P[1] = 1;
-    for(int i = 1; i <= n; ++i) vis[i] = 0;
+void AddEdge(int x,int y){w[++cnt]=(Edge){y,h[x]};h[x]=cnt;}
+void init(){
+	 int i,x,y;
+	 scanf("%d",&n);
+	 for(i=1;i<n;i++){
+	 	scanf("%d%d",&x,&y);
+	 	AddEdge(x,y);AddEdge(y,x);
+	 }
 }
-void getroot(int u,int fa) {
-        f[u] = 0;
-        siz[u] =  1;
-        for(int i = 0; i < G[u].size(); ++i) {
-            int to = G[u][i];
-            if(vis[to] || to == fa) continue;
-            getroot(to,u);
-            siz[u] += siz[to];
-            f[u] = max(f[u],siz[to]);
-        }
-        f[u] = max(f[u], allnode - siz[u]);
-        if(f[u] < f[root]) root = u;
+void Size(int x,int fa){
+	 int j,y;s[x]=1;
+	 for(j=h[x];j;j=w[j].next){
+	 	y=w[j].to;
+	 	if(vst[y]||y==fa)continue;
+	 	Size(y,x);
+	 	s[x]+=s[y];
+	 }
 }
-
-int len = 1,cnt[N],dep[N],nowcnt[N],mxdep;
-LL ans = 0;
-void getdeep(int u,int f) {
-    siz[u] = 1;
-    for(int i = 0; i < G[u].size(); ++i) {
-        int to = G[u][i];
-        if(vis[to] || to == f) continue;
-        dep[to] = dep[u] + 1;
-        getdeep(to,u);
-        mxdep = max(mxdep,dep[to]);
-        siz[u] += siz[to];//每个节点的大小
-    }
+void Find(int x,int fa){
+	 int j,y,mx=0;
+	 for(j=h[x];j;j=w[j].next){
+	 	y=w[j].to;
+	 	if(vst[y]||y==fa)continue;
+	 	Find(y,x);
+	 	mx=max(mx,s[y]);
+	 }
+	 mx=max(mx,sz-s[x]);
+	 if(mx<minn){minn=mx;tg=x;}
 }
-void dfs(int u,int f,int p) {
-    nowcnt[dep[u]]+=p;
-    if(p == -1) cnt[dep[u]] += 1;
-    for(int i = 0; i < G[u].size(); ++i) {
-        int to = G[u][i];
-        if(vis[to] || to == f) continue;
-        dfs(to,u,p);
-    }
+int FindCen(int x){
+	minn=0x7fffffff/2;tg=-1;
+	Size(x,0);
+	sz=s[x];
+	Find(x,0);
+	return tg;
 }
-LL cal(int u) {
-    LL ret = 0;
-    for(int i = 0; i <= n; ++i) cnt[i] = 0;
-    cnt[0] = 1;
-    dep[u] = 0;
-    mxdep = -1;
-    getdeep(u,0);//每个节点的深度
-    len = 1;
-    while(len <= 2*mxdep) len<<=1;
-    for(int i = 0; i < G[u].size(); ++i) {
-        int to = G[u][i];
-        if(vis[to]) continue;//后面走前面来枚举
-        dfs(to,u,1);
-        for(int j = 0; j < len; ++j) t[j] = Complex(nowcnt[j],0);
-        for(int j = 0; j < len; ++j) s[j] = Complex(cnt[j],0);
-
-        FFT(s,len,1);FFT(t,len,1);
-        for(int j = 0; j < len; ++j) s[j] = s[j] * t[j];
-        FFT(s,len,-1);
-        for(int j = 0;j < len; ++j) {
-            LL tmp = (s[j].r+0.5);
-
-            if(P[j]) continue;
-
-            ret += tmp;
-        }
-        dfs(to,u,-1);
-    }
-    return ret;
+void DFS(int x,int fa,int dep){
+	 int j,y;
+	 sn[dep]++;
+	 for(j=h[x];j;j=w[j].next){
+	 	y=w[j].to;
+	 	if(y==fa||vst[y])continue;
+	 	DFS(y,x,dep+1);
+	 }
 }
-void work(int u) {
-    vis[u] = 1;
-    ans += cal(u);
-   // exit(0);
-    for(int i = 0; i < G[u].size(); ++i) {
-        int to = G[u][i];
-        if(vis[to]) continue;
-        allnode = siz[to];
-        root = 0;
-        getroot(to,0);
-        work(root);
-    }
+void Clear(LL a[],int N){for(int i=0;i<N;i++)a[i]=0;}
+void Calc(LL a[],int N,int ty){
+     for(int i=0;i<N;i++)fft1[i]=a[i];
+	 for(int i=0;i<N;i++)fft2[i]=a[i];
+	 FFT(fft1,N,1);FFT(fft2,N,1);
+	 for(int i=0;i<N;i++)fft1[i]*=fft2[i];
+	 FFT(fft1,N,-1);
+	 for(int i=0;i<N;i++)sum[i]+=ty*(LL)(fft1[i].real()+0.3);
 }
-int main() {
-    scanf("%d",&n);
-    while(len <= n) len<<=1;
-    init();//素数筛。。
-
-    for(int i = 1; i < n; ++i) {
-        int x,y;
-        scanf("%d%d",&x,&y);
-        G[x].push_back(y);
-        G[y].push_back(x);
-    }
-
-    ans = 0;
-    f[0] = inf;root = 0;allnode = n;
-    getroot(1,0);
-    work(root);
-    printf("%.6f\n",(double)1.0*ans/((double)n*(n-1)/2));
-    return 0;
+void Add(LL a[],LL b[],int N){for(int i=0;i<N;i++)a[i]+=b[i];}
+void solve(int x){
+	 int j,y,N,i;
+	 Size(x,0);
+	 for(N=1;N<=s[x];N<<=1);
+	 Clear(sp,N);sp[0]=1;
+	 for(j=h[x];j;j=w[j].next){
+	 	y=w[j].to;
+	 	if(vst[y])continue;
+	 	for(N=1;N<=2*s[y];N<<=1);
+	 	Clear(sn,N);DFS(y,x,1);
+	 	Calc(sn,N,-1);Add(sp,sn,N);
+	 }
+	 for(N=1;N<=s[x];N<<=1);
+	 Calc(sp,N,1);sum[0]=0;
+}
+void DivOnT(int x){
+	 int j,y,G;
+	 G=FindCen(x);
+	 solve(G);
+	 vst[G]=1;
+	 for(j=h[G];j;j=w[j].next){
+	 	y=w[j].to;
+	 	if(!vst[y])DivOnT(y);
+	 }
+}
+void solve(){
+	 int i,j;LL ans=0;
+	 for(i=2;i<=n;i++)
+	   if(!prm[i]){
+	   	  ans+=sum[i];
+	   	  for(j=2*i;j<=n;j+=i)prm[j]=1;
+	   }
+	 printf("%.6lf\n",ans/2/((double)n*(n-1)/2.0));
+}
+int main(){
+    init();
+    DivOnT(1);
+    solve();
+	return 0;
 }
