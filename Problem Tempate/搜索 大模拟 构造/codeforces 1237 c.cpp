@@ -1,3 +1,5 @@
+//考虑删除同线上的  然后同面上的  最后剩下的坑定相邻组合    
+
 #include <bits/stdc++.h>
 
 using namespace std;
