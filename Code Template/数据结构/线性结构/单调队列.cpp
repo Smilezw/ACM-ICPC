@@ -1,7 +1,7 @@
-//é¡ºåºç»™å‡ºæŸ±çŠ¶å›¾çš„é•¿  é«˜
-//æ±‚æœ€å¤§çŸ©å½¢é¢ç§¯
-//ç®—å½“å‰é«˜åº¦å·¦å³æœ€è¿œæ‰©å¤§èŒƒå›´å³å¯
-#pragma GCC optimize(3,"Ofast","inline")  //ä¼˜åŒ–  æ— é™ç²¾åº¦
+//Ë³Ğò¸ø³öÖù×´Í¼µÄ³¤  ¸ß
+//Çó×î´ó¾ØĞÎÃæ»ı
+//Ëãµ±Ç°¸ß¶È×óÓÒ×îÔ¶À©´ó·¶Î§¼´¿É
+#pragma GCC optimize(3,"Ofast","inline")
 #include <bits/stdc++.h>
 #define pb push_back
 #define Rep(i,a,b) for(int i=a;i<=b;i++)

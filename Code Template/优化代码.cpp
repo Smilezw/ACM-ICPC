@@ -17,7 +17,7 @@ const int N = 1e6 + 5;
 //½¨Í¼
 struct Edge{int to,next; int w;} edge[M];
 int tot, head[N];
-void init() {tot = 0;for(int i=0;i<=n;i+)head[i]=-1;}
+void init() {tot = 0;for(int i=0;i<=n;i++)head[i]=-1;}
 void add(int u,int v,int w) {edge[tot].to=v, edge[tot].w=w, edge[tot].next=head[u], head[u]=tot++;}
 
 //¿ìËÙÃÝ
